@@ -1615,6 +1615,14 @@ Your primary goal is to help the user:
                     return mockResponse;
                 } else {
                     // Production: Call actual API
+                    const systemPromptLength = TYPHOON_SYSTEM_PROMPT.length;
+                    const approxPromptTokens = Math.ceil((systemPromptLength + prompt.length) / 4);
+                    const minCompletionTokens = approxPromptTokens + 50;
+                    const requestedCompletionTokens = typeof options.max_completion_tokens === 'number'
+                        ? options.max_completion_tokens
+                        : 6000;
+                    const computedCompletionTokens = Math.max(minCompletionTokens, requestedCompletionTokens);
+
                     const requestPayload = {
                         messages: [
                              { role: 'system', content: TYPHOON_SYSTEM_PROMPT },
@@ -1623,7 +1631,7 @@ Your primary goal is to help the user:
                         temperature: typeof options.temperature === 'number' ? options.temperature : 0.7,
                         top_p: typeof options.top_p === 'number' ? options.top_p : 0.6,
                         frequency_penalty: typeof options.frequency_penalty === 'number' ? options.frequency_penalty : 0,
-                        max_completion_tokens: options.max_completion_tokens || 4000,
+                        max_completion_tokens: Math.min(60000, computedCompletionTokens),
                         stream: !!options.stream
                     };
 

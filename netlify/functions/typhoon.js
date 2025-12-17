@@ -103,13 +103,17 @@ exports.handler = async (event, context) => {
         }
 
         // Prepare Typhoon API request
+        const requestedCompletionTokens = typeof requestBody.max_completion_tokens === 'number'
+            ? requestBody.max_completion_tokens
+            : 6000;
+
         const typhoonRequest = {
             model: requestBody.model || TYPHOON_MODEL,
             messages: requestBody.messages,
             temperature: typeof requestBody.temperature === 'number' ? requestBody.temperature : 0.7,
             top_p: typeof requestBody.top_p === 'number' ? requestBody.top_p : 0.6,
             frequency_penalty: typeof requestBody.frequency_penalty === 'number' ? requestBody.frequency_penalty : 0,
-            max_completion_tokens: requestBody.max_completion_tokens || 4000,
+            max_completion_tokens: Math.min(60000, requestedCompletionTokens),
             stream: !!requestBody.stream
         };
 
