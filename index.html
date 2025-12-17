@@ -38,6 +38,7 @@
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="config.js"></script>
     
     <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -1203,6 +1204,35 @@
         let currentStep = 'welcome';
         let currentUser = null;
 
+        const APP_HOSTNAME = window.location.hostname;
+        const LOCAL_HOSTS = ['localhost', '127.0.0.1'];
+        const isLocalHost = LOCAL_HOSTS.includes(APP_HOSTNAME);
+        const isGitHubPages = APP_HOSTNAME.includes('github.io');
+
+        const getApiBaseUrl = () => {
+            if (window.EA_CONFIG && typeof window.EA_CONFIG.getApiBaseUrl === 'function') {
+                return window.EA_CONFIG.getApiBaseUrl() || '';
+            }
+            return '';
+        };
+
+        const shouldUseLocalAuth = () => {
+            if (isLocalHost) {
+                return true;
+            }
+            if (isGitHubPages && !getApiBaseUrl()) {
+                return true;
+            }
+            return false;
+        };
+
+        const getApiUrl = (path) => {
+            if (window.EA_CONFIG && typeof window.EA_CONFIG.getApiUrl === 'function') {
+                return window.EA_CONFIG.getApiUrl(path);
+            }
+            return path;
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             // Check authentication
             checkAuthentication();
@@ -1216,9 +1246,7 @@
             
             if (token && userInfo) {
                 try {
-                    // For local development, validate token locally
-                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                        // Local validation - just check if token exists and user info is valid
+                    if (shouldUseLocalAuth()) {
                         const user = JSON.parse(userInfo);
                         if (user && user.id) {
                             currentUser = user;
@@ -1226,8 +1254,7 @@
                             return true;
                         }
                     } else {
-                        // Production: Validate token with server
-                        const response = await fetch('/api/validate', {
+                        const response = await fetch(getApiUrl('/api/validate'), {
                             headers: {
                                 'Authorization': 'Bearer ' + token
                             }
@@ -1248,7 +1275,7 @@
             }
             
             // Redirect to login if not authenticated
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
             return false;
         }
 
@@ -1262,7 +1289,7 @@
         function logout() {
             localStorage.removeItem('ea_session');
             localStorage.removeItem('ea_user');
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         }
 
         // Safe value getter
@@ -1494,7 +1521,7 @@
 
             try {
                 // For local development, simulate AI response
-                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                if (shouldUseLocalAuth()) {
                     // Simulate API delay
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     
@@ -1548,7 +1575,7 @@
                     return mockResponse;
                 } else {
                     // Production: Call actual API
-                    const response = await fetch('/api/typhoon', {
+                    const response = await fetch(getApiUrl('/api/typhoon'), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
