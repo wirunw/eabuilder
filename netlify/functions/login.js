@@ -71,7 +71,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Generate JWT token
+        // Generate JWT token (extend expiry for persistent sessions)
         const token = jwt.sign(
             { 
                 userId: user.id, 
@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
                 role: user.role 
             },
             JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '365d' }
         );
 
         // Return success response
