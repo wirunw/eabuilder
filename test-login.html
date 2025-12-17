@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 3px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>Test Login API</h1>
+    
+    <div class="test-section">
+        <h3>Test Login Function</h3>
+        <button onclick="testLogin()">Test Login</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test Validate Function</h3>
+        <button onclick="testValidate()">Test Validate</button>
+        <div id="validateResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Stored Token</h3>
+        <div id="storedToken" class="result"></div>
+    </div>
+
+    <script>
+        let currentToken = '';
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        username: 'admin@eabuilder.com', 
+                        password: 'admin123' 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    currentToken = data.token;
+                    localStorage.setItem('test_token', currentToken);
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Login Success!</strong><br>
+                        Token: ${data.token.substring(0, 50)}...<br>
+                        User: ${data.user.name} (${data.user.role})
+                    `;
+                    updateStoredToken();
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Login Failed</strong><br>
+                        Status: ${response.status}<br>
+                        Error: ${data.error || 'Unknown error'}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Network Error</strong><br>
+                    ${error.message}
+                `;
+            }
+        }
+        
+        async function testValidate() {
+            const resultDiv = document.getElementById('validateResult');
+            resultDiv.innerHTML = 'Testing...';
+            
+            const token = currentToken || localStorage.getItem('test_token');
+            
+            if (!token) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ No token available. Please login first.';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/validate', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.valid) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Token Valid!</strong><br>
+                        User: ${data.user.username}<br>
+                        Role: ${data.user.role}<br>
+                        User ID: ${data.user.userId}
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Token Invalid</strong><br>
+                        Status: ${response.status}<br>
+                        Error: ${data.error || 'Unknown error'}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Network Error</strong><br>
+                    ${error.message}
+                `;
+            }
+        }
+        
+        function updateStoredToken() {
+            const tokenDiv = document.getElementById('storedToken');
+            const token = currentToken || localStorage.getItem('test_token');
+            
+            if (token) {
+                tokenDiv.innerHTML = `
+                    <strong>Current Token:</strong><br>
+                    ${token.substring(0, 100)}...
+                `;
+            } else {
+                tokenDiv.innerHTML = 'No token stored';
+            }
+        }
+        
+        // Initialize
+        updateStoredToken();
+    </script>
+</body>
+</html>
