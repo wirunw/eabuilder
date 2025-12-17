@@ -1,0 +1,29 @@
+{
+  "name": "ea-flow-builder",
+  "version": "2.0.0",
+  "description": "EA Flow Builder - Enterprise Architecture Workflow powered by Typhoon AI",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required'",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "enterprise-architecture",
+    "ai",
+    "typhoon",
+    "workflow",
+    "business-architecture"
+  ],
+  "author": "เภสัชกรวิรุณ เวชศิริ",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
