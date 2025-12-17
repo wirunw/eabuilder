@@ -110,6 +110,7 @@ git push origin main
 - แก้ไขใน `index.html`
 - เพิ่ม JavaScript functions ในส่วน `<script>`
 - ใช้ `callTyphoon()` สำหรับเรียก AI API
+- หาก Typhoon บัญชีของคุณใช้ชื่อโมเดลไม่ตรงกับค่าเริ่มต้น ให้ตั้งค่า environment variable `TYPHOON_MODEL` บน Netlify (เช่น `typhoon-1.5` หรือชื่อที่ Typhoon Dashboard แสดง) จากนั้น redeploy เพื่อให้ฟังก์ชัน `netlify/functions/typhoon.js` ใช้โมเดลที่ถูกต้อง
 
 ### การตั้งค่า `config.js`
 - ใช้สำหรับกำหนดค่า API Endpoint และ host override

@@ -59,6 +59,10 @@ your-project/
    - **Key**: `JWT_SECRET`
    - **Value**: [สร้าง secret key ที่ซับซ้อน เช่น `ea-flow-builder-secret-2024-unique-key`]
    - **Scope**: Production
+   
+   - **Key**: `TYPHOON_MODEL`
+   - **Value**: [ชื่อโมเดลที่บัญชีคุณใช้งานได้ เช่น `typhoon-1.5`]
+   - **Scope**: Production
 
 3. **Redeploy Site**
    - หลังจากเพิ่ม environment variables แล้ว

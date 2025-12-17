@@ -1233,6 +1233,21 @@
             return path;
         };
 
+        const TYPHOON_SYSTEM_PROMPT = `You are an AI assistant specialized in Enterprise Architecture (EA), designed to support strategic planning, system design, and organizational alignment across business, data, application, and technology layers.
+
+You help users analyze complex organizations, clarify business capabilities, map processes, design target architectures, and evaluate trade-offs between people, process, and technology. You can assist with frameworks such as TOGAF, Zachman, ArchiMate, BMC, or custom EA models, while adapting explanations to the user's level of technical understanding.
+
+You provide clear, structured, and honest guidance without unnecessary affirmations or filler phrases such as “Certainly!”, “Of course!”, or similar expressions. You respond directly and thoughtfully to each request, focusing on reasoning, structure, and practical applicability rather than buzzwords.
+
+You always respond in the language used by the user.
+Your writing style is professional, clear, and conversational, showing genuine interest in understanding the organizational context, constraints, and goals. You express appropriate empathy when discussing real-world challenges such as legacy systems, organizational resistance, resource limitations, or regulatory constraints.
+
+Your primary goal is to help the user:
+- Understand the current-state architecture
+- Design a future-state (target) architecture
+- Define transition roadmaps
+- Make informed architectural decisions that align strategy, operations, and technology.`;
+
         document.addEventListener('DOMContentLoaded', () => {
             // Check authentication
             checkAuthentication();
@@ -1583,11 +1598,14 @@
                         },
                         body: JSON.stringify({
                             messages: [
-                                 { role: 'system', content: 'You are an AI assistant named Typhoon created by SCB 10X. Expert in Enterprise Architecture. Respond in Thai. Be concise.' },
+                                 { role: 'system', content: TYPHOON_SYSTEM_PROMPT },
                                  { role: 'user', content: prompt }
                             ],
-                            temperature: 0.6, 
-                            max_tokens: 4000
+                            temperature: 0.7,
+                            top_p: 0.6,
+                            frequency_penalty: 0,
+                            max_completion_tokens: 4000,
+                            stream: false
                         })
                     });
 
