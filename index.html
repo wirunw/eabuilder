@@ -1325,6 +1325,31 @@ Your primary goal is to help the user:
             `;
         }
 
+        // Normalize AI JSON outputs for textareas
+        function formatStructuredValue(value, indent = 0) {
+            if (value == null) return '';
+            const prefix = ' '.repeat(indent);
+            if (typeof value === 'string') return value.trim();
+            if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+            if (Array.isArray(value)) {
+                return value.map(item => {
+                    const formatted = formatStructuredValue(item, indent + 2);
+                    return formatted ? `${prefix}- ${formatted}` : '';
+                }).filter(Boolean).join('\n');
+            }
+            if (typeof value === 'object') {
+                return Object.entries(value).map(([key, val]) => {
+                    const formatted = formatStructuredValue(val, indent + 2);
+                    if (!formatted) return `${prefix}${key}`;
+                    if (formatted.includes('\n')) {
+                        return `${prefix}${key}:\n${formatted}`;
+                    }
+                    return `${prefix}${key}: ${formatted}`;
+                }).join('\n');
+            }
+            return '';
+        }
+
         function switchStep(stepId) {
             // Update current step
             currentStep = stepId;
@@ -1673,10 +1698,10 @@ Your primary goal is to help the user:
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-strengths').value = data.strengths;
-                    document.getElementById('input-weaknesses').value = data.weaknesses;
-                    document.getElementById('input-opportunities').value = data.opportunities;
-                    document.getElementById('input-threats').value = data.threats;
+                    document.getElementById('input-strengths').value = formatStructuredValue(data.strengths);
+                    document.getElementById('input-weaknesses').value = formatStructuredValue(data.weaknesses);
+                    document.getElementById('input-opportunities').value = formatStructuredValue(data.opportunities);
+                    document.getElementById('input-threats').value = formatStructuredValue(data.threats);
                     showToast('SWOT Analysis completed!', 'success');
                 } catch(e) { 
                     console.error(e); 
@@ -1699,11 +1724,11 @@ Your primary goal is to help the user:
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-biz-front').value = data.biz_front;
-                    document.getElementById('input-biz-core').value = data.biz_core;
-                    document.getElementById('input-biz-back').value = data.biz_back;
-                    document.getElementById('input-data-arch').value = data.data;
-                    document.getElementById('input-tech-arch').value = data.tech;
+                    document.getElementById('input-biz-front').value = formatStructuredValue(data.biz_front);
+                    document.getElementById('input-biz-core').value = formatStructuredValue(data.biz_core);
+                    document.getElementById('input-biz-back').value = formatStructuredValue(data.biz_back);
+                    document.getElementById('input-data-arch').value = formatStructuredValue(data.data);
+                    document.getElementById('input-tech-arch').value = formatStructuredValue(data.tech);
                     showToast('Blueprint generated successfully!', 'success');
                 } catch(e) { 
                     console.error(e); 
@@ -1723,9 +1748,9 @@ Your primary goal is to help the user:
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-short-term').value = data.short;
-                    document.getElementById('input-medium-term').value = data.medium;
-                    document.getElementById('input-long-term').value = data.long;
+                    document.getElementById('input-short-term').value = formatStructuredValue(data.short);
+                    document.getElementById('input-medium-term').value = formatStructuredValue(data.medium);
+                    document.getElementById('input-long-term').value = formatStructuredValue(data.long);
                     showToast('Roadmap generated successfully!', 'success');
                 } catch(e) { 
                     console.error(e); 
@@ -1745,11 +1770,11 @@ Your primary goal is to help the user:
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-gov').value = data.gov;
-                    document.getElementById('input-risk').value = data.risk;
-                    document.getElementById('input-protect').value = data.protect;
-                    document.getElementById('input-detect').value = data.detect;
-                    document.getElementById('input-respond').value = data.respond;
+                    document.getElementById('input-gov').value = formatStructuredValue(data.gov);
+                    document.getElementById('input-risk').value = formatStructuredValue(data.risk);
+                    document.getElementById('input-protect').value = formatStructuredValue(data.protect);
+                    document.getElementById('input-detect').value = formatStructuredValue(data.detect);
+                    document.getElementById('input-respond').value = formatStructuredValue(data.respond);
                     showToast('Security analysis completed!', 'success');
                 } catch(e) { 
                     console.error(e); 
@@ -1781,20 +1806,20 @@ Your primary goal is to help the user:
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
                     
                     // Executive Dashboard
-                    document.getElementById('input-exec-kpis').value = data.exec_kpis;
-                    document.getElementById('input-exec-csf').value = data.exec_csf;
+                    document.getElementById('input-exec-kpis').value = formatStructuredValue(data.exec_kpis);
+                    document.getElementById('input-exec-csf').value = formatStructuredValue(data.exec_csf);
                     
                     // Project Management Dashboard
-                    document.getElementById('input-project-metrics').value = data.project_metrics;
-                    document.getElementById('input-project-milestones').value = data.project_milestones;
+                    document.getElementById('input-project-metrics').value = formatStructuredValue(data.project_metrics);
+                    document.getElementById('input-project-milestones').value = formatStructuredValue(data.project_milestones);
                     
                     // IT Operations Dashboard
-                    document.getElementById('input-it-performance').value = data.it_performance;
-                    document.getElementById('input-it-health').value = data.it_health;
+                    document.getElementById('input-it-performance').value = formatStructuredValue(data.it_performance);
+                    document.getElementById('input-it-health').value = formatStructuredValue(data.it_health);
                     
                     // Security & Compliance Dashboard
-                    document.getElementById('input-security-metrics').value = data.security_metrics;
-                    document.getElementById('input-risk-indicators').value = data.risk_indicators;
+                    document.getElementById('input-security-metrics').value = formatStructuredValue(data.security_metrics);
+                    document.getElementById('input-risk-indicators').value = formatStructuredValue(data.risk_indicators);
                     
                     showToast('Dashboard KPIs generated successfully!', 'success');
                 } catch(e) { 
