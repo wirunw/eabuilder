@@ -1509,7 +1509,7 @@ Your primary goal is to help the user:
         }
 
         // --- Typhoon API (Server-side) ---
-        async function callTyphoon(prompt, buttonId, textId, originalText, isIcon = false) {
+        async function callTyphoon(prompt, buttonId, textId, originalText, isIcon = false, options = {}) {
             const token = localStorage.getItem('ea_session');
             if (!token) {
                 showToast('กรุณาเข้าสู่ระบบใหม่', 'error');
@@ -1590,23 +1590,29 @@ Your primary goal is to help the user:
                     return mockResponse;
                 } else {
                     // Production: Call actual API
+                    const requestPayload = {
+                        messages: [
+                             { role: 'system', content: TYPHOON_SYSTEM_PROMPT },
+                             { role: 'user', content: prompt }
+                        ],
+                        temperature: typeof options.temperature === 'number' ? options.temperature : 0.7,
+                        top_p: typeof options.top_p === 'number' ? options.top_p : 0.6,
+                        frequency_penalty: typeof options.frequency_penalty === 'number' ? options.frequency_penalty : 0,
+                        max_completion_tokens: options.max_completion_tokens || 4000,
+                        stream: !!options.stream
+                    };
+
+                    if (options.expectJson) {
+                        requestPayload.response_format = { type: 'json_object' };
+                    }
+
                     const response = await fetch(getApiUrl('/api/typhoon'), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer ' + token
                         },
-                        body: JSON.stringify({
-                            messages: [
-                                 { role: 'system', content: TYPHOON_SYSTEM_PROMPT },
-                                 { role: 'user', content: prompt }
-                            ],
-                            temperature: 0.7,
-                            top_p: 0.6,
-                            frequency_penalty: 0,
-                            max_completion_tokens: 4000,
-                            stream: false
-                        })
+                        body: JSON.stringify(requestPayload)
                     });
 
                     if (!response.ok) {
@@ -1663,7 +1669,7 @@ Your primary goal is to help the user:
             const prompt = `Analyze SWOT for Organization: "${orgType}". Description: "${orgDesc}".
             IMPORTANT: Return ONLY valid JSON with keys: "strengths", "weaknesses", "opportunities", "threats".`;
 
-            const res = await callTyphoon(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT');
+            const res = await callTyphoon(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1689,7 +1695,7 @@ Your primary goal is to help the user:
             - Tech & Data must align with Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "biz_front", "biz_core", "biz_back", "data", "tech".`;
 
-            const res = await callTyphoon(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)');
+            const res = await callTyphoon(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1713,7 +1719,7 @@ Your primary goal is to help the user:
             Task: Create IT Roadmap based on Blueprint and Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "short", "medium", "long".`;
 
-            const res = await callTyphoon(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap');
+            const res = await callTyphoon(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1735,7 +1741,7 @@ Your primary goal is to help the user:
             Task: Analyze Cyber Security based on Tech Architecture.
             IMPORTANT: Return ONLY valid JSON with keys: "gov", "risk", "protect", "detect", "respond".`;
 
-            const res = await callTyphoon(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze');
+            const res = await callTyphoon(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1769,7 +1775,7 @@ Your primary goal is to help the user:
             "exec_kpis", "exec_csf", "project_metrics", "project_milestones", 
             "it_performance", "it_health", "security_metrics", "risk_indicators"`;
 
-            const res = await callTyphoon(prompt, 'btn-dashboard', 'btn-dashboard-text', 'Generate Dashboard');
+            const res = await callTyphoon(prompt, 'btn-dashboard', 'btn-dashboard-text', 'Generate Dashboard', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
