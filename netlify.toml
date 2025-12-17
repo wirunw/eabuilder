@@ -49,13 +49,14 @@
   to = "/index.html"
   status = 301
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 404
-
-# API redirects for Netlify Functions
+# API redirects for Netlify Functions (MUST come before catch-all redirect)
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# Catch-all redirect for SPA (MUST be last)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404

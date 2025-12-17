@@ -17,6 +17,12 @@
     <h1>Test Login API</h1>
     
     <div class="test-section">
+        <h3>URL Mode</h3>
+        <button id="toggleBtn" onclick="toggleURL()">Use Direct URLs</button>
+        <p>Toggle between /api/* (proxied) and /.netlify/functions/* (direct)</p>
+    </div>
+    
+    <div class="test-section">
         <h3>Test Login Function</h3>
         <button onclick="testLogin()">Test Login</button>
         <div id="loginResult" class="result"></div>
@@ -35,13 +41,16 @@
 
     <script>
         let currentToken = '';
+        let useDirectURL = false;
         
         async function testLogin() {
             const resultDiv = document.getElementById('loginResult');
             resultDiv.innerHTML = 'Testing...';
             
+            const loginURL = useDirectURL ? '/.netlify/functions/login' : '/api/login';
+            
             try {
-                const response = await fetch('/api/login', {
+                const response = await fetch(loginURL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,6 +69,7 @@
                     resultDiv.className = 'result success';
                     resultDiv.innerHTML = `
                         <strong>✅ Login Success!</strong><br>
+                        URL: ${loginURL}<br>
                         Token: ${data.token.substring(0, 50)}...<br>
                         User: ${data.user.name} (${data.user.role})
                     `;
@@ -68,6 +78,7 @@
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = `
                         <strong>❌ Login Failed</strong><br>
+                        URL: ${loginURL}<br>
                         Status: ${response.status}<br>
                         Error: ${data.error || 'Unknown error'}
                     `;
@@ -76,6 +87,7 @@
                 resultDiv.className = 'result error';
                 resultDiv.innerHTML = `
                     <strong>❌ Network Error</strong><br>
+                    URL: ${loginURL}<br>
                     ${error.message}
                 `;
             }
@@ -93,8 +105,10 @@
                 return;
             }
             
+            const validateURL = useDirectURL ? '/.netlify/functions/validate' : '/api/validate';
+            
             try {
-                const response = await fetch('/api/validate', {
+                const response = await fetch(validateURL, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -107,6 +121,7 @@
                     resultDiv.className = 'result success';
                     resultDiv.innerHTML = `
                         <strong>✅ Token Valid!</strong><br>
+                        URL: ${validateURL}<br>
                         User: ${data.user.username}<br>
                         Role: ${data.user.role}<br>
                         User ID: ${data.user.userId}
@@ -115,6 +130,7 @@
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = `
                         <strong>❌ Token Invalid</strong><br>
+                        URL: ${validateURL}<br>
                         Status: ${response.status}<br>
                         Error: ${data.error || 'Unknown error'}
                     `;
@@ -123,22 +139,32 @@
                 resultDiv.className = 'result error';
                 resultDiv.innerHTML = `
                     <strong>❌ Network Error</strong><br>
+                    URL: ${validateURL}<br>
                     ${error.message}
                 `;
             }
         }
         
+        function toggleURL() {
+            useDirectURL = !useDirectURL;
+            const btn = document.getElementById('toggleBtn');
+            btn.textContent = useDirectURL ? 'Use /api/* URLs' : 'Use Direct URLs';
+            updateStoredToken();
+        }
+        
         function updateStoredToken() {
             const tokenDiv = document.getElementById('storedToken');
             const token = currentToken || localStorage.getItem('test_token');
+            const urlType = useDirectURL ? 'Direct (/.netlify/functions/*)' : 'Proxied (/api/*)';
             
             if (token) {
                 tokenDiv.innerHTML = `
                     <strong>Current Token:</strong><br>
-                    ${token.substring(0, 100)}...
+                    ${token.substring(0, 100)}...<br>
+                    <strong>URL Mode:</strong> ${urlType}
                 `;
             } else {
-                tokenDiv.innerHTML = 'No token stored';
+                tokenDiv.innerHTML = `No token stored<br><strong>URL Mode:</strong> ${urlType}`;
             }
         }
         
