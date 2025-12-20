@@ -33,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS (via CDN) -->
+    <!-- Tailwind CSS (via CDN) - Note: For production, install locally via npm -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Icons -->
@@ -1555,31 +1555,63 @@ Your primary goal is to help the user:
 
         function sanitizeJsonResponse(raw) {
             if (!raw || typeof raw !== 'string') return '';
+            
             let cleaned = raw.trim();
-            cleaned = cleaned.replace(/```json|```/gi, '').trim();
+            
+            // Remove markdown code blocks
+            cleaned = cleaned.replace(/```json\s*|```\s*/gi, '').trim();
+            
+            // Find JSON object boundaries
             const firstBrace = cleaned.indexOf('{');
             const lastBrace = cleaned.lastIndexOf('}');
+            
             if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
                 cleaned = cleaned.slice(firstBrace, lastBrace + 1);
             }
+            
+            // Fix common JSON issues
+            cleaned = cleaned
+                .replace(/,\s*}/g, '}') // Remove trailing commas
+                .replace(/,\s*]/g, ']') // Remove trailing commas in arrays
+                .replace(/([{,]\s*)([a-zA-Z_][a-zA-Z0-9_]*):/g, '$1"$2":') // Quote unquoted keys
+                .replace(/:\s*'([^']*)'/g, ':"$1"') // Convert single quotes to double quotes
+                .replace(/:\s*([^",\[\]{}\s][^",\[\]{}\s]*)/g, ':"$1"'); // Quote unquoted values
+            
             return cleaned;
         }
 
         function tryParseJson(raw) {
             try {
-                return JSON.parse(sanitizeJsonResponse(raw));
+                const cleaned = sanitizeJsonResponse(raw);
+                if (!cleaned) return null;
+                
+                // Additional validation
+                if (cleaned.startsWith('{') && cleaned.endsWith('}')) {
+                    return JSON.parse(cleaned);
+                }
+                return null;
             } catch (error) {
-                console.warn('Unable to parse JSON:', error, raw);
+                console.warn('Unable to parse JSON:', error.message, 'Raw:', raw.substring(0, 200) + '...');
                 return null;
             }
         }
 
         function parseJsonOrNotify(raw, label) {
             try {
-                return JSON.parse(sanitizeJsonResponse(raw));
+                const cleaned = sanitizeJsonResponse(raw);
+                if (!cleaned) {
+                    throw new Error('Empty or invalid JSON response');
+                }
+                
+                // Additional validation
+                if (!cleaned.startsWith('{') || !cleaned.endsWith('}')) {
+                    throw new Error('Response is not a valid JSON object');
+                }
+                
+                return JSON.parse(cleaned);
             } catch (error) {
-                console.error(`JSON parse failed for ${label}:`, error, raw);
-                showToast(`Error parsing ${label} data`, 'error');
+                console.error(`JSON parse failed for ${label}:`, error.message, 'Raw:', raw.substring(0, 200) + '...');
+                showToast(`Error parsing ${label} data: ${error.message}`, 'error');
                 return null;
             }
         }
