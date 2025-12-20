@@ -114,7 +114,6 @@ exports.handler = async (event, context) => {
 
         const temperature = typeof requestBody.temperature === 'number' ? requestBody.temperature : 0.7;
         const topP = typeof requestBody.top_p === 'number' ? requestBody.top_p : 0.8;
-        const frequencyPenalty = typeof requestBody.frequency_penalty === 'number' ? requestBody.frequency_penalty : 0;
         const maxOutputTokens = typeof requestBody.max_output_tokens === 'number'
             ? requestBody.max_output_tokens
             : 1200;
@@ -152,7 +151,6 @@ exports.handler = async (event, context) => {
             include: includeFields,
             temperature: temperature,
             top_p: topP,
-            frequency_penalty: frequencyPenalty,
             max_output_tokens: Math.min(8000, maxOutputTokens)
         };
 

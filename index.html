@@ -1650,7 +1650,6 @@ Your primary goal is to help the user:
                         ],
                         temperature: typeof options.temperature === 'number' ? options.temperature : 0.7,
                         top_p: typeof options.top_p === 'number' ? options.top_p : 0.8,
-                        frequency_penalty: typeof options.frequency_penalty === 'number' ? options.frequency_penalty : 0,
                         max_output_tokens: Math.min(8000, computedOutputTokens),
                         text_format: options.text_format || 'text',
                         text_verbosity: options.text_verbosity || (options.expectJson ? 'low' : 'medium'),
