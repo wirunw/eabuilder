@@ -1640,7 +1640,7 @@ Your primary goal is to help the user:
                     const minOutputTokens = approxPromptTokens + 50;
                     const requestedOutputTokens = typeof options.max_output_tokens === 'number'
                         ? options.max_output_tokens
-                        : 1200;
+                        : 600;
                     const computedOutputTokens = Math.max(minOutputTokens, requestedOutputTokens);
 
                     const requestPayload = {
@@ -1648,7 +1648,7 @@ Your primary goal is to help the user:
                              { role: 'system', content: OPENAI_SYSTEM_PROMPT },
                              { role: 'user', content: prompt }
                         ],
-                        max_output_tokens: Math.min(8000, computedOutputTokens),
+                        max_output_tokens: Math.min(1200, computedOutputTokens),
                         text_format: options.text_format || 'text',
                         text_verbosity: options.text_verbosity || (options.expectJson ? 'low' : 'medium'),
                         reasoning_effort: options.reasoning_effort || 'medium',

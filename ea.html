@@ -822,7 +822,7 @@ Your primary goal is to help the user:
                     tools: [],
                     store: typeof options.store === 'boolean' ? options.store : true,
                     include: ["reasoning.encrypted_content", "web_search_call.action.sources"],
-                    max_output_tokens: Math.min(8000, options.max_output_tokens || 1200)
+                    max_output_tokens: Math.min(1200, options.max_output_tokens || 600)
                 };
 
                 const response = await fetch('https://api.openai.com/v1/responses', {

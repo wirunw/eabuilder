@@ -114,7 +114,7 @@ exports.handler = async (event, context) => {
 
         const maxOutputTokens = typeof requestBody.max_output_tokens === 'number'
             ? requestBody.max_output_tokens
-            : 1200;
+            : 600;
         const textFormat = requestBody.text_format || 'text';
         const textVerbosity = requestBody.text_verbosity || 'medium';
         const reasoningEffort = requestBody.reasoning_effort || 'medium';
@@ -147,7 +147,7 @@ exports.handler = async (event, context) => {
             tools: Array.isArray(requestBody.tools) ? requestBody.tools : [],
             store: storeResponse,
             include: includeFields,
-            max_output_tokens: Math.min(8000, maxOutputTokens)
+            max_output_tokens: Math.min(1200, maxOutputTokens)
         };
 
         // Call OpenAI Responses API
