@@ -1610,9 +1610,66 @@ Your primary goal is to help the user:
                 
                 return JSON.parse(cleaned);
             } catch (error) {
-                console.error(`JSON parse failed for ${label}:`, error.message, 'Raw:', raw.substring(0, 200) + '...');
+                console.error(`JSON parse failed for ${label}:`, error.message, 'Raw:', raw.substring(0, 500) + '...');
+                
+                // Try to fix common JSON issues and retry
+                try {
+                    const fixed = fixTruncatedJson(cleaned);
+                    if (fixed) {
+                        console.log(`Attempting to parse fixed JSON for ${label}`);
+                        return JSON.parse(fixed);
+                    }
+                } catch (fixError) {
+                    console.error('Fixed JSON also failed:', fixError.message);
+                }
+                
                 showToast(`Error parsing ${label} data: ${error.message}`, 'error');
                 return null;
+            }
+        }
+
+        function fixTruncatedJson(jsonStr) {
+            if (!jsonStr || typeof jsonStr !== 'string') return null;
+            
+            let fixed = jsonStr.trim();
+            
+            // Handle truncated arrays - close them properly
+            const openArrays = (fixed.match(/\[/g) || []).length;
+            const closeArrays = (fixed.match(/\]/g) || []).length;
+            const missingBrackets = openArrays - closeArrays;
+            
+            if (missingBrackets > 0) {
+                fixed += ']'.repeat(missingBrackets);
+            }
+            
+            // Handle truncated objects - close them properly
+            const openBraces = (fixed.match(/{/g) || []).length;
+            const closeBraces = (fixed.match(/}/g) || []).length;
+            const missingBraces = openBraces - closeBraces;
+            
+            if (missingBraces > 0) {
+                fixed += '}'.repeat(missingBraces);
+            }
+            
+            // Remove trailing commas before closing brackets/braces
+            fixed = fixed.replace(/,\s*([}\]])/g, '$1');
+            
+            // Fix incomplete string values
+            fixed = fixed.replace(/("[^"]*?)$/gm, '$1"');
+            
+            // Validate if it looks like valid JSON now
+            try {
+                JSON.parse(fixed);
+                return fixed;
+            } catch (e) {
+                // If still invalid, try a more aggressive fix
+                const aggressiveFix = fixed.replace(/"[^"]*?$/gm, '""').replace(/:\s*([^",\[\]{}\s][^",\[\]{}\s]*)$/gm, ':"$1"');
+                try {
+                    JSON.parse(aggressiveFix);
+                    return aggressiveFix;
+                } catch (e2) {
+                    return null;
+                }
             }
         }
 
