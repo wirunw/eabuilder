@@ -767,7 +767,7 @@ Your primary goal is to help the user:
                 .map(part => {
                     const chunks = Array.isArray(part.content)
                         ? part.content
-                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'text')
+                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'summary_text')
                             .map(chunk => chunk.text)
                         : [];
                     return chunks.join('\n').trim();
@@ -804,11 +804,11 @@ Your primary goal is to help the user:
                     input: [
                         {
                             role: 'system',
-                            content: [{ type: 'text', text: OPENAI_SYSTEM_PROMPT }]
+                            content: [{ type: 'input_text', text: OPENAI_SYSTEM_PROMPT }]
                         },
                         {
                             role: 'user',
-                            content: [{ type: 'text', text: prompt }]
+                            content: [{ type: 'input_text', text: prompt }]
                         }
                     ],
                     text: {

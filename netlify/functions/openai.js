@@ -131,7 +131,7 @@ exports.handler = async (event, context) => {
                 role: message.role,
                 content: [
                     {
-                        type: 'text',
+                        type: 'input_text',
                         text: typeof message.content === 'string'
                             ? message.content
                             : JSON.stringify(message.content)
@@ -186,7 +186,7 @@ exports.handler = async (event, context) => {
                 .map(part => {
                     const textChunks = Array.isArray(part.content)
                         ? part.content
-                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'text')
+                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'summary_text')
                             .map(chunk => chunk.text)
                         : [];
                     return textChunks.join('\n').trim();
