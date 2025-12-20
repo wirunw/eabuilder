@@ -58,8 +58,6 @@ npm run serve # เปิด HTTP server ทั่วไป (ตอบสนอ�
     "reasoning.encrypted_content",
     "web_search_call.action.sources"
   ],
-  "temperature": 0.7,
-  "top_p": 0.8,
   "max_output_tokens": 1200
 }
 ```

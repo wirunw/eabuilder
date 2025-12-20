@@ -822,8 +822,6 @@ Your primary goal is to help the user:
                     tools: [],
                     store: typeof options.store === 'boolean' ? options.store : true,
                     include: ["reasoning.encrypted_content", "web_search_call.action.sources"],
-                    temperature: typeof options.temperature === 'number' ? options.temperature : 0.65,
-                    top_p: typeof options.top_p === 'number' ? options.top_p : 0.8,
                     max_output_tokens: Math.min(8000, options.max_output_tokens || 1200)
                 };
 
