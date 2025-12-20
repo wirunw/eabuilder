@@ -1565,6 +1565,15 @@ Your primary goal is to help the user:
             return cleaned;
         }
 
+        function tryParseJson(raw) {
+            try {
+                return JSON.parse(sanitizeJsonResponse(raw));
+            } catch (error) {
+                console.warn('Unable to parse JSON:', error, raw);
+                return null;
+            }
+        }
+
         function parseJsonOrNotify(raw, label) {
             try {
                 return JSON.parse(sanitizeJsonResponse(raw));
@@ -1767,17 +1776,34 @@ Your primary goal is to help the user:
             - Tech & Data must align with Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "biz_front", "biz_core", "biz_back", "data", "tech".`;
 
-            const res = await callOpenAI(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
-            if(res) {
-                const data = parseJsonOrNotify(res, 'Blueprint');
+            const attempt = async (maxTokens) => {
+                return callOpenAI(
+                    prompt,
+                    'btn-blueprint',
+                    'btn-blueprint-text',
+                    'Auto Blueprint (Bullet Points)',
+                    false,
+                    { expectJson: true, max_output_tokens: maxTokens }
+                );
+            };
+
+            let res = await attempt(600);
+            if(!res) return;
+
+            let data = tryParseJson(res);
+            if (!data) {
+                res = await attempt(900);
+                if(!res) return;
+                data = parseJsonOrNotify(res, 'Blueprint');
                 if (!data) return;
-                document.getElementById('input-biz-front').value = formatStructuredValue(data.biz_front);
-                document.getElementById('input-biz-core').value = formatStructuredValue(data.biz_core);
-                document.getElementById('input-biz-back').value = formatStructuredValue(data.biz_back);
-                document.getElementById('input-data-arch').value = formatStructuredValue(data.data);
-                document.getElementById('input-tech-arch').value = formatStructuredValue(data.tech);
-                showToast('Blueprint generated successfully!', 'success');
             }
+
+            document.getElementById('input-biz-front').value = formatStructuredValue(data.biz_front);
+            document.getElementById('input-biz-core').value = formatStructuredValue(data.biz_core);
+            document.getElementById('input-biz-back').value = formatStructuredValue(data.biz_back);
+            document.getElementById('input-data-arch').value = formatStructuredValue(data.data);
+            document.getElementById('input-tech-arch').value = formatStructuredValue(data.tech);
+            showToast('Blueprint generated successfully!', 'success');
         }
 
         async function generateRoadmap() {
