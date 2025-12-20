@@ -33,8 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS (via CDN) - Note: For production, install locally via npm -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS removed for production - Using inline styles instead -->
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -1614,6 +1613,7 @@ Your primary goal is to help the user:
                 
                 // Try to fix common JSON issues and retry
                 try {
+                    const cleaned = sanitizeJsonResponse(raw);
                     const fixed = fixTruncatedJson(cleaned);
                     if (fixed) {
                         console.log(`Attempting to parse fixed JSON for ${label}`);
