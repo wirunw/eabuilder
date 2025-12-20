@@ -1553,6 +1553,28 @@ Your primary goal is to help the user:
                 .trim();
         }
 
+        function sanitizeJsonResponse(raw) {
+            if (!raw || typeof raw !== 'string') return '';
+            let cleaned = raw.trim();
+            cleaned = cleaned.replace(/```json|```/gi, '').trim();
+            const firstBrace = cleaned.indexOf('{');
+            const lastBrace = cleaned.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+                cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+            }
+            return cleaned;
+        }
+
+        function parseJsonOrNotify(raw, label) {
+            try {
+                return JSON.parse(sanitizeJsonResponse(raw));
+            } catch (error) {
+                console.error(`JSON parse failed for ${label}:`, error, raw);
+                showToast(`Error parsing ${label} data`, 'error');
+                return null;
+            }
+        }
+
         // --- OpenAI API (Server-side) ---
         async function callOpenAI(prompt, buttonId, textId, originalText, isIcon = false, options = {}) {
             const token = localStorage.getItem('ea_session');
@@ -1725,17 +1747,13 @@ Your primary goal is to help the user:
 
             const res = await callOpenAI(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT', false, { expectJson: true });
             if(res) {
-                try {
-                    const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-strengths').value = formatStructuredValue(data.strengths);
-                    document.getElementById('input-weaknesses').value = formatStructuredValue(data.weaknesses);
-                    document.getElementById('input-opportunities').value = formatStructuredValue(data.opportunities);
-                    document.getElementById('input-threats').value = formatStructuredValue(data.threats);
-                    showToast('SWOT Analysis completed!', 'success');
-                } catch(e) { 
-                    console.error(e); 
-                    showToast('Error parsing SWOT data', 'error');
-                }
+                const data = parseJsonOrNotify(res, 'SWOT');
+                if (!data) return;
+                document.getElementById('input-strengths').value = formatStructuredValue(data.strengths);
+                document.getElementById('input-weaknesses').value = formatStructuredValue(data.weaknesses);
+                document.getElementById('input-opportunities').value = formatStructuredValue(data.opportunities);
+                document.getElementById('input-threats').value = formatStructuredValue(data.threats);
+                showToast('SWOT Analysis completed!', 'success');
             }
         }
 
@@ -1751,18 +1769,14 @@ Your primary goal is to help the user:
 
             const res = await callOpenAI(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
             if(res) {
-                try {
-                    const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-biz-front').value = formatStructuredValue(data.biz_front);
-                    document.getElementById('input-biz-core').value = formatStructuredValue(data.biz_core);
-                    document.getElementById('input-biz-back').value = formatStructuredValue(data.biz_back);
-                    document.getElementById('input-data-arch').value = formatStructuredValue(data.data);
-                    document.getElementById('input-tech-arch').value = formatStructuredValue(data.tech);
-                    showToast('Blueprint generated successfully!', 'success');
-                } catch(e) { 
-                    console.error(e); 
-                    showToast('Error parsing blueprint data', 'error');
-                }
+                const data = parseJsonOrNotify(res, 'Blueprint');
+                if (!data) return;
+                document.getElementById('input-biz-front').value = formatStructuredValue(data.biz_front);
+                document.getElementById('input-biz-core').value = formatStructuredValue(data.biz_core);
+                document.getElementById('input-biz-back').value = formatStructuredValue(data.biz_back);
+                document.getElementById('input-data-arch').value = formatStructuredValue(data.data);
+                document.getElementById('input-tech-arch').value = formatStructuredValue(data.tech);
+                showToast('Blueprint generated successfully!', 'success');
             }
         }
 
@@ -1775,16 +1789,12 @@ Your primary goal is to help the user:
 
             const res = await callOpenAI(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap', false, { expectJson: true });
             if(res) {
-                try {
-                    const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-short-term').value = formatStructuredValue(data.short);
-                    document.getElementById('input-medium-term').value = formatStructuredValue(data.medium);
-                    document.getElementById('input-long-term').value = formatStructuredValue(data.long);
-                    showToast('Roadmap generated successfully!', 'success');
-                } catch(e) { 
-                    console.error(e); 
-                    showToast('Error parsing roadmap data', 'error');
-                }
+                const data = parseJsonOrNotify(res, 'Roadmap');
+                if (!data) return;
+                document.getElementById('input-short-term').value = formatStructuredValue(data.short);
+                document.getElementById('input-medium-term').value = formatStructuredValue(data.medium);
+                document.getElementById('input-long-term').value = formatStructuredValue(data.long);
+                showToast('Roadmap generated successfully!', 'success');
             }
         }
 
@@ -1797,18 +1807,14 @@ Your primary goal is to help the user:
 
             const res = await callOpenAI(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze', false, { expectJson: true });
             if(res) {
-                try {
-                    const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    document.getElementById('input-gov').value = formatStructuredValue(data.gov);
-                    document.getElementById('input-risk').value = formatStructuredValue(data.risk);
-                    document.getElementById('input-protect').value = formatStructuredValue(data.protect);
-                    document.getElementById('input-detect').value = formatStructuredValue(data.detect);
-                    document.getElementById('input-respond').value = formatStructuredValue(data.respond);
-                    showToast('Security analysis completed!', 'success');
-                } catch(e) { 
-                    console.error(e); 
-                    showToast('Error parsing security data', 'error');
-                }
+                const data = parseJsonOrNotify(res, 'Security');
+                if (!data) return;
+                document.getElementById('input-gov').value = formatStructuredValue(data.gov);
+                document.getElementById('input-risk').value = formatStructuredValue(data.risk);
+                document.getElementById('input-protect').value = formatStructuredValue(data.protect);
+                document.getElementById('input-detect').value = formatStructuredValue(data.detect);
+                document.getElementById('input-respond').value = formatStructuredValue(data.respond);
+                showToast('Security analysis completed!', 'success');
             }
         }
 
@@ -1831,30 +1837,26 @@ Your primary goal is to help the user:
 
             const res = await callOpenAI(prompt, 'btn-dashboard', 'btn-dashboard-text', 'Generate Dashboard', false, { expectJson: true });
             if(res) {
-                try {
-                    const data = JSON.parse(res.replace(/```json|```/g, '').trim());
-                    
-                    // Executive Dashboard
-                    document.getElementById('input-exec-kpis').value = formatStructuredValue(data.exec_kpis);
-                    document.getElementById('input-exec-csf').value = formatStructuredValue(data.exec_csf);
-                    
-                    // Project Management Dashboard
-                    document.getElementById('input-project-metrics').value = formatStructuredValue(data.project_metrics);
-                    document.getElementById('input-project-milestones').value = formatStructuredValue(data.project_milestones);
-                    
-                    // IT Operations Dashboard
-                    document.getElementById('input-it-performance').value = formatStructuredValue(data.it_performance);
-                    document.getElementById('input-it-health').value = formatStructuredValue(data.it_health);
-                    
-                    // Security & Compliance Dashboard
-                    document.getElementById('input-security-metrics').value = formatStructuredValue(data.security_metrics);
-                    document.getElementById('input-risk-indicators').value = formatStructuredValue(data.risk_indicators);
-                    
-                    showToast('Dashboard KPIs generated successfully!', 'success');
-                } catch(e) { 
-                    console.error(e); 
-                    showToast('Error parsing dashboard data', 'error');
-                }
+                const data = parseJsonOrNotify(res, 'Dashboard');
+                if (!data) return;
+                
+                // Executive Dashboard
+                document.getElementById('input-exec-kpis').value = formatStructuredValue(data.exec_kpis);
+                document.getElementById('input-exec-csf').value = formatStructuredValue(data.exec_csf);
+                
+                // Project Management Dashboard
+                document.getElementById('input-project-metrics').value = formatStructuredValue(data.project_metrics);
+                document.getElementById('input-project-milestones').value = formatStructuredValue(data.project_milestones);
+                
+                // IT Operations Dashboard
+                document.getElementById('input-it-performance').value = formatStructuredValue(data.it_performance);
+                document.getElementById('input-it-health').value = formatStructuredValue(data.it_health);
+                
+                // Security & Compliance Dashboard
+                document.getElementById('input-security-metrics').value = formatStructuredValue(data.security_metrics);
+                document.getElementById('input-risk-indicators').value = formatStructuredValue(data.risk_indicators);
+                
+                showToast('Dashboard KPIs generated successfully!', 'success');
             }
         }
 
