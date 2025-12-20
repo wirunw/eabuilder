@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 // JWT Secret (in production, use environment variable)
 const JWT_SECRET = process.env.JWT_SECRET || 'ea-flow-builder-secret-key-2024';
 
-// Typhoon API Configuration
-const TYPHOON_API_URL = 'https://api.opentyphoon.ai/v1/chat/completions';
-const TYPHOON_API_KEY = process.env.TYPHOON_API_KEY || 'your-typhoon-api-key-here';
-const TYPHOON_MODEL = process.env.TYPHOON_MODEL || 'typhoon-v2.5-30b-a3b-instruct';
+// OpenAI Responses API Configuration
+const OPENAI_RESPONSES_URL = 'https://api.openai.com/v1/responses';
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5-mini';
 
 // Rate limiting (simple in-memory store)
 const rateLimitStore = new Map();
@@ -102,46 +102,100 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Prepare Typhoon API request
-        const requestedCompletionTokens = typeof requestBody.max_completion_tokens === 'number'
-            ? requestBody.max_completion_tokens
-            : 6000;
+        if (!OPENAI_API_KEY) {
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({
+                    error: 'Missing OpenAI API key. Set OPENAI_API_KEY in environment variables.'
+                })
+            };
+        }
 
-        const typhoonRequest = {
-            model: requestBody.model || TYPHOON_MODEL,
-            messages: requestBody.messages,
-            temperature: typeof requestBody.temperature === 'number' ? requestBody.temperature : 0.7,
-            top_p: typeof requestBody.top_p === 'number' ? requestBody.top_p : 0.6,
-            frequency_penalty: typeof requestBody.frequency_penalty === 'number' ? requestBody.frequency_penalty : 0,
-            max_completion_tokens: Math.min(60000, requestedCompletionTokens),
-            stream: !!requestBody.stream
+        const temperature = typeof requestBody.temperature === 'number' ? requestBody.temperature : 0.7;
+        const topP = typeof requestBody.top_p === 'number' ? requestBody.top_p : 0.8;
+        const frequencyPenalty = typeof requestBody.frequency_penalty === 'number' ? requestBody.frequency_penalty : 0;
+        const maxOutputTokens = typeof requestBody.max_output_tokens === 'number'
+            ? requestBody.max_output_tokens
+            : 1200;
+        const textFormat = requestBody.text_format || 'text';
+        const textVerbosity = requestBody.text_verbosity || 'medium';
+        const reasoningEffort = requestBody.reasoning_effort || 'medium';
+        const storeResponse = typeof requestBody.store === 'boolean' ? requestBody.store : true;
+        const includeFields = Array.isArray(requestBody.include) && requestBody.include.length > 0
+            ? requestBody.include
+            : ["reasoning.encrypted_content", "web_search_call.action.sources"];
+
+        const openAIRequest = {
+            model: requestBody.model || OPENAI_MODEL,
+            input: requestBody.messages.map(message => ({
+                role: message.role,
+                content: [
+                    {
+                        type: 'text',
+                        text: typeof message.content === 'string'
+                            ? message.content
+                            : JSON.stringify(message.content)
+                    }
+                ]
+            })),
+            text: {
+                format: { type: textFormat },
+                verbosity: textVerbosity
+            },
+            reasoning: {
+                effort: reasoningEffort,
+                summary: 'auto'
+            },
+            tools: Array.isArray(requestBody.tools) ? requestBody.tools : [],
+            store: storeResponse,
+            include: includeFields,
+            temperature: temperature,
+            top_p: topP,
+            frequency_penalty: frequencyPenalty,
+            max_output_tokens: Math.min(8000, maxOutputTokens)
         };
 
-        // Call Typhoon API
-        const response = await fetch(TYPHOON_API_URL, {
+        // Call OpenAI Responses API
+        const response = await fetch(OPENAI_RESPONSES_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${TYPHOON_API_KEY}`
+                'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(typhoonRequest)
+            body: JSON.stringify(openAIRequest)
         });
 
         if (!response.ok) {
             const errorData = await response.text();
-            console.error('Typhoon API error:', errorData);
+            console.error('OpenAI API error:', errorData);
             
             return {
                 statusCode: response.status,
                 headers,
                 body: JSON.stringify({ 
-                    error: 'Typhoon API error',
+                    error: 'OpenAI API error',
                     details: errorData
                 })
             };
         }
 
-        const typhoonResponse = await response.json();
+        const openAiResponse = await response.json();
+
+        const extractedText = Array.isArray(openAiResponse.output)
+            ? openAiResponse.output
+                .filter(part => part.type === 'message')
+                .map(part => {
+                    const textChunks = Array.isArray(part.content)
+                        ? part.content
+                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'text')
+                            .map(chunk => chunk.text)
+                        : [];
+                    return textChunks.join('\n').trim();
+                })
+                .join('\n\n')
+                .trim()
+            : '';
 
         // Return successful response
         return {
@@ -149,12 +203,15 @@ exports.handler = async (event, context) => {
             headers,
             body: JSON.stringify({
                 success: true,
-                data: typhoonResponse
+                data: {
+                    text: extractedText,
+                    raw: openAiResponse
+                }
             })
         };
 
     } catch (error) {
-        console.error('Typhoon proxy error:', error);
+        console.error('OpenAI proxy error:', error);
         
         if (error.name === 'TokenExpiredError') {
             return {

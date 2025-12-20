@@ -1,7 +1,7 @@
 {
   "name": "ea-flow-builder",
   "version": "2.0.0",
-  "description": "EA Flow Builder - Enterprise Architecture Workflow powered by Typhoon AI",
+  "description": "EA Flow Builder - Enterprise Architecture Workflow powered by OpenAI GPT-5.2 mini",
   "main": "index.html",
   "scripts": {
     "dev": "netlify dev",
@@ -11,7 +11,7 @@
   "keywords": [
     "enterprise-architecture",
     "ai",
-    "typhoon",
+    "openai",
     "workflow",
     "business-architecture"
   ],

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EA Builder Workflow - Powered by Typhoon</title>
+    <title>EA Builder Workflow - Powered by OpenAI GPT-5.2 mini</title>
     <!-- Google Fonts: Sarabun for professional Thai text -->
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS (via CDN) -->
@@ -179,10 +179,10 @@
     <div id="settings-modal" class="modal">
         <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-key text-red-500 mr-2"></i>ตั้งค่า Typhoon API Key</h3>
+                <h3 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-key text-red-500 mr-2"></i>ตั้งค่า OpenAI API Key</h3>
                 <button onclick="toggleSettings()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-xl"></i></button>
             </div>
-            <p class="text-sm text-gray-600 mb-4">โปรดระบุ Typhoon API Key (sk-...)</p>
+            <p class="text-sm text-gray-600 mb-4">โปรดระบุ OpenAI API Key (sk-...)</p>
             <div class="input-group mb-6">
                 <input type="password" id="api-key-input" placeholder="sk-..." class="font-mono text-sm">
             </div>
@@ -204,7 +204,7 @@
                     <h1 class="text-xl font-bold text-gray-900 flex items-center gap-2">
                         EA Workflow Builder
                         <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-200">
-                            <i class="fa-solid fa-wind mr-1"></i>Typhoon
+                            <i class="fa-solid fa-robot mr-1"></i>OpenAI GPT-5.2 mini
                         </span>
                     </h1>
                     <p class="text-xs text-gray-500">สำหรับคุณวิรุณ เวชศิริ (Pharm Connection / IT Ph.D.)</p>
@@ -273,7 +273,7 @@
                 </div>
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">ยินดีต้อนรับสู่ระบบ EA Builder AI</h2>
                 <p class="text-gray-600 mb-8 max-w-xl mx-auto">
-                    เครื่องมือช่วยสร้างสถาปัตยกรรมองค์กรอัจฉริยะ ผสานพลัง <strong>Typhoon AI (SCB 10X)</strong> ช่วยวิเคราะห์บริบท ร่างวิสัยทัศน์ และออกแบบโครงสร้างแบบ End-to-End
+                    เครื่องมือช่วยสร้างสถาปัตยกรรมองค์กรอัจฉริยะ ผสานพลัง <strong>OpenAI GPT-5.2 mini</strong> ช่วยวิเคราะห์บริบท ร่างวิสัยทัศน์ และออกแบบโครงสร้างแบบ End-to-End
                 </p>
                 <button onclick="switchStep('A')" class="bg-red-600 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:bg-red-700 transition">
                     เริ่มสร้าง Architecture <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -647,6 +647,20 @@
     <script>
         const apiKey = ""; 
         let manualApiKey = localStorage.getItem('ea_builder_api_key') || '';
+        const OPENAI_SYSTEM_PROMPT = `You are an AI assistant specialized in Enterprise Architecture (EA), designed to support strategic planning, system design, and organizational alignment across business, data, application, and technology layers.
+
+You help users analyze complex organizations, clarify business capabilities, map processes, design target architectures, and evaluate trade-offs between people, process, and technology. You can assist with frameworks such as TOGAF, Zachman, ArchiMate, BMC, or custom EA models, while adapting explanations to the user's level of technical understanding.
+
+You provide clear, structured, and honest guidance without unnecessary affirmations or filler phrases. You respond directly and thoughtfully to each request, focusing on reasoning, structure, and practical applicability rather than buzzwords.
+
+You always respond in the language used by the user.
+Your writing style is professional, clear, and conversational, showing genuine interest in understanding the organizational context, constraints, and goals. You express appropriate empathy when discussing real-world challenges such as legacy systems, organizational resistance, resource limitations, or regulatory constraints.
+
+Your primary goal is to help the user:
+- Understand the current-state architecture
+- Design a future-state (target) architecture
+- Define transition roadmaps
+- Make informed architectural decisions that align strategy, operations, and technology.`;
 
         document.addEventListener('DOMContentLoaded', () => {
              if(manualApiKey) document.getElementById('api-key-input').value = manualApiKey;
@@ -746,10 +760,26 @@
             URL.revokeObjectURL(url);
         }
 
-        // --- Typhoon API ---
-        async function callTyphoon(prompt, buttonId, textId, originalText, isIcon = false) {
+        function extractTextFromOpenAIRaw(raw) {
+            if (!raw || !Array.isArray(raw.output)) return '';
+            return raw.output
+                .filter(part => part.type === 'message')
+                .map(part => {
+                    const chunks = Array.isArray(part.content)
+                        ? part.content
+                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'text')
+                            .map(chunk => chunk.text)
+                        : [];
+                    return chunks.join('\n').trim();
+                })
+                .join('\n\n')
+                .trim();
+        }
+
+        // --- OpenAI API ---
+        async function callOpenAI(prompt, buttonId, textId, originalText, isIcon = false, options = {}) {
             let effectiveApiKey = apiKey || manualApiKey;
-            if (!effectiveApiKey) { alert('กรุณาตั้งค่า Typhoon API Key'); toggleSettings(); return null; }
+            if (!effectiveApiKey) { alert('กรุณาตั้งค่า OpenAI API Key'); toggleSettings(); return null; }
 
             const button = buttonId ? document.getElementById(buttonId) : null;
             const textSpan = textId ? document.getElementById(textId) : null;
@@ -769,34 +799,55 @@
             }
 
             try {
-                const response = await fetch('https://api.opentyphoon.ai/v1/chat/completions', {
+                const requestPayload = {
+                    model: 'gpt-5-mini',
+                    input: [
+                        {
+                            role: 'system',
+                            content: [{ type: 'text', text: OPENAI_SYSTEM_PROMPT }]
+                        },
+                        {
+                            role: 'user',
+                            content: [{ type: 'text', text: prompt }]
+                        }
+                    ],
+                    text: {
+                        format: { type: 'text' },
+                        verbosity: options.expectJson ? 'low' : 'medium'
+                    },
+                    reasoning: {
+                        effort: options.reasoning_effort || 'medium',
+                        summary: 'auto'
+                    },
+                    tools: [],
+                    store: typeof options.store === 'boolean' ? options.store : true,
+                    include: ["reasoning.encrypted_content", "web_search_call.action.sources"],
+                    temperature: typeof options.temperature === 'number' ? options.temperature : 0.65,
+                    top_p: typeof options.top_p === 'number' ? options.top_p : 0.8,
+                    max_output_tokens: Math.min(8000, options.max_output_tokens || 1200)
+                };
+
+                const response = await fetch('https://api.openai.com/v1/responses', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${effectiveApiKey}` },
-                    body: JSON.stringify({
-                        model: 'typhoon-v2.5-30b-a3b-instruct',
-                        messages: [
-                             { role: 'system', content: 'You are an AI assistant named Typhoon created by SCB 10X. Expert in Enterprise Architecture. Respond in Thai. Be concise.' },
-                             { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.6, max_tokens: 4000, top_p: 0.6
-                    })
+                    body: JSON.stringify(requestPayload)
                 });
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    // Check for 401 specifically
                     if (response.status === 401) {
-                        throw new Error("Invalid API Key. Please check your settings.");
+                        throw new Error("Invalid OpenAI API Key. Please check your settings.");
                     }
                     throw new Error(`API Request Failed: ${response.status} - ${errorText}`);
                 }
 
                 const data = await response.json();
-                if (data.choices && data.choices.length > 0) return data.choices[0].message.content;
-                throw new Error("No response choices");
+                const aiText = extractTextFromOpenAIRaw(data);
+                if (aiText) return aiText;
+                throw new Error("No AI response");
             } catch (error) {
                 console.error(error); 
-                if (error.message.includes("Invalid API Key")) {
+                if (error.message.includes("Invalid OpenAI API Key")) {
                     alert("⚠️ API Key ไม่ถูกต้อง กรุณาตรวจสอบ Key ในเมนูตั้งค่า (⚙️) ครับ");
                     toggleSettings(); // Auto open settings
                 } else {
@@ -824,7 +875,7 @@
             If specific info is missing, imply reasonable assumptions for this org type.
             Return ONLY the content text, no intro/outro.`;
             
-            const res = await callTyphoon(prompt, null, null, null, true);
+            const res = await callOpenAI(prompt, null, null, null, true);
             if(res) document.getElementById(fieldId).value = res.replace(/"/g, '');
         }
 
@@ -836,7 +887,7 @@
             const prompt = `Analyze SWOT for Organization: "${orgType}". Description: "${orgDesc}".
             IMPORTANT: Return ONLY valid JSON with keys: "strengths", "weaknesses", "opportunities", "threats".`;
 
-            const res = await callTyphoon(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT');
+            const res = await callOpenAI(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -857,7 +908,7 @@
             IMPORTANT: Return ONLY valid JSON with keys: "vision", "goals".`;
             
             // Reusing specific button logic manually since ID matches
-            const res = await callTyphoon(prompt, 'btn-vision', 'btn-vision-text', 'Auto Draft Goals');
+            const res = await callOpenAI(prompt, 'btn-vision', 'btn-vision-text', 'Auto Draft Goals', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -877,7 +928,7 @@
             - Tech & Data must align with Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "biz_front", "biz_core", "biz_back", "data", "tech".`;
 
-            const res = await callTyphoon(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)');
+            const res = await callOpenAI(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -897,7 +948,7 @@
             Task: Create IT Roadmap based on Blueprint and Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "short", "medium", "long".`;
 
-            const res = await callTyphoon(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap');
+            const res = await callOpenAI(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -915,7 +966,7 @@
             Task: Analyze Cyber Security based on Tech Architecture.
             IMPORTANT: Return ONLY valid JSON with keys: "gov", "risk", "protect", "detect", "respond".`;
 
-            const res = await callTyphoon(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze');
+            const res = await callOpenAI(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());

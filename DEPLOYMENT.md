@@ -8,7 +8,7 @@
 3. ลากโฟลเดอร์โปรเจคทั้งหมดไปวางในช่อง "Drag and drop your site output folder here"
 4. รอประมาณ 1-2 นาที - เว็บไซต์จะพร้อมใช้งาน!
 
-> ⚠️ **สำคัญ:** วิธี Drag & Drop จะ deploy เฉพาะไฟล์ Static ไม่รองรับ Netlify Functions ดังนั้น Login และ Typhoon API จะไม่ทำงาน หากต้องการใช้ฟีเจอร์เหล่านี้ให้ใช้ Git/CLI deploy เท่านั้น
+> ⚠️ **สำคัญ:** วิธี Drag & Drop จะ deploy เฉพาะไฟล์ Static ไม่รองรับ Netlify Functions ดังนั้น Login และ OpenAI Proxy API จะไม่ทำงาน หากต้องการใช้ฟีเจอร์เหล่านี้ให้ใช้ Git/CLI deploy เท่านั้น
 
 ### วิธีที่ 2: Git Integration
 1. Push code ไป GitHub/GitLab/Bitbucket
@@ -52,16 +52,16 @@ your-project/
 2. **เพิ่ม Environment Variables ต่อไปนี้:**
 
    **สำหรับ Production:**
-   - **Key**: `TYPHOON_API_KEY`
-   - **Value**: [ใส่ Typhoon API key จริงของคุณ]
+   - **Key**: `OPENAI_API_KEY`
+   - **Value**: [ใส่ OpenAI API key จริงของคุณ]
    - **Scope**: Production
 
    - **Key**: `JWT_SECRET`
    - **Value**: [สร้าง secret key ที่ซับซ้อน เช่น `ea-flow-builder-secret-2024-unique-key`]
    - **Scope**: Production
    
-   - **Key**: `TYPHOON_MODEL`
-   - **Value**: [ชื่อโมเดลที่บัญชีคุณใช้งานได้ เช่น `typhoon-1.5`]
+   - **Key**: `OPENAI_MODEL`
+   - **Value**: [ชื่อโมเดลที่บัญชีคุณใช้งานได้ เช่น `gpt-5-mini`]
    - **Scope**: Production
 
 3. **Redeploy Site**
@@ -105,7 +105,7 @@ your-project/
    - ตรวจสอบ navigation และ animations
 
 2. **API Integration**
-   - ตั้งค่า Typhoon API Key
+- ตั้งค่า OpenAI API Key
    - ทดสอบการเรียก AI ในแต่ละ phase
    - ตรวจสอบ error handling
 
@@ -123,7 +123,7 @@ your-project/
 
 ### 1. CORS Issues
 ถ้าเจอ CORS error ตรวจสอบว่า:
-- API endpoint ถูกต้อง: `https://api.opentyphoon.ai/v1/chat/completions`
+- API endpoint ถูกต้อง: `https://api.openai.com/v1/responses`
 - ไม่มี firewall บล็อค
 
 ### 2. API Key Not Working

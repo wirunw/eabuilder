@@ -1,7 +1,7 @@
 {
   "name": "EA Builder Workflow",
   "short_name": "EA Builder",
-  "description": "Professional Enterprise Architecture tool powered by Typhoon AI",
+  "description": "Professional Enterprise Architecture tool powered by OpenAI GPT-5.2 mini",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

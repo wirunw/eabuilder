@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="สร้างสถาปัตยกรรมองค์กรอัจฉริยะด้วย AI ผ่าน 6 ขั้นตอนการทำงานแบบครบวงจร">
-    <meta name="keywords" content="Enterprise Architecture, EA, Typhoon AI, SCB 10X, Workflow Builder">
+    <meta name="keywords" content="Enterprise Architecture, EA, OpenAI GPT-5.2 mini, Workflow Builder, AI EA Tool">
     <meta name="author" content="เภสัชกรวิรุณ เวชศิริ">
     
     <!-- Open Graph / Facebook -->
@@ -478,7 +478,7 @@
                                 <h1 class="text-xl font-bold text-gray-900 flex items-center gap-2">
                                     EA Flow Builder
                                     <span class="text-xs px-2.5 py-1 rounded-full bg-gradient-to-r from-red-100 to-orange-100 text-red-700 border border-red-200 font-semibold">
-                                        <i class="fas fa-wind mr-1"></i>Typhoon AI
+                                        <i class="fas fa-robot mr-1"></i>OpenAI GPT-5.2 mini
                                     </span>
                                 </h1>
                                 <p class="text-xs text-gray-500">Enterprise Architecture Workflow Solution</p>
@@ -678,7 +678,7 @@
                         </h2>
                         
                         <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                            เครื่องมือช่วยสร้างสถาปัตยกรรมองค์กรอัจฉริยะ ผสานพลัง <strong class="text-red-600">Typhoon AI (SCB 10X)</strong> 
+                            เครื่องมือช่วยสร้างสถาปัตยกรรมองค์กรอัจฉริยะ ผสานพลัง <strong class="text-red-600">OpenAI GPT-5.2 mini</strong> 
                             ช่วยวิเคราะห์บริบท ร่างวิสัยทัศน์ และออกแบบโครงสร้างแบบ End-to-End
                         </p>
                         
@@ -700,7 +700,7 @@
                                     <i class="fas fa-brain text-blue-600 text-xl"></i>
                                 </div>
                                 <h3 class="font-semibold text-gray-800 mb-2">AI-Powered</h3>
-                                <p class="text-sm text-gray-600">ใช้ Typhoon AI ช่วยวิเคราะห์และสร้างเนื้อหาอัตโนมัติ</p>
+                                <p class="text-sm text-gray-600">ใช้ OpenAI GPT-5.2 mini ช่วยวิเคราะห์และสร้างเนื้อหาอัตโนมัติ</p>
                             </div>
                             
                             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
@@ -751,8 +751,8 @@
                                 </button>
                             </div>
                             <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 space-y-1">
-                                <p>⚠️ Typhoon API (Free Tier) จำกัด ~5 คำสั่ง/วินาที และ 200 คำสั่ง/นาที – กรุณาเว้นช่วง 2–3 วินาทีระหว่างการกดปุ่ม Auto</p>
-                                <p>⚠️ หากขึ้น “Typhoon API error” อาจเกิดจากกดถี่หรือข้อมูลยาวเกิน ให้รอสักครู่แล้วลองใหม่ หรือปรับลดเนื้อหาที่ไม่จำเป็น</p>
+                                <p>⚠️ OpenAI GPT-5.2 mini จำกัดปริมาณคำสั่งตามโควต้าบัญชี – กรุณาเว้นช่วง 2–3 วินาทีระหว่างการกดปุ่ม Auto</p>
+                                <p>⚠️ หากขึ้น “OpenAI API error” อาจเกิดจากกดถี่หรือข้อความยาวเกิน ให้รอสักครู่แล้วลองใหม่ หรือปรับลดเนื้อหาที่ไม่จำเป็น</p>
                                 <p>⚠️ ถ้าไม่ได้ใช้งานนานหรือลบ cookie ระบบจะให้ login ใหม่เพื่อความปลอดภัยก่อนใช้ AI</p>
                             </div>
                         </div>
@@ -1194,8 +1194,7 @@
                         จัดทำโดย เภสัชกรวิรุณ เวชศิริ
                     </p>
                     <p class="text-xs text-gray-500 mt-1">
-                        Powered by Typhoon AI (SCB 10X) | Enterprise Architecture Workflow Solution
-                    </p>
+                        Powered by OpenAI GPT-5.2 mini | Enterprise Architecture Workflow Solution
                 </div>
             </div>
         </footer>
@@ -1238,7 +1237,7 @@
             return path;
         };
 
-        const TYPHOON_SYSTEM_PROMPT = `You are an AI assistant specialized in Enterprise Architecture (EA), designed to support strategic planning, system design, and organizational alignment across business, data, application, and technology layers.
+        const OPENAI_SYSTEM_PROMPT = `You are an AI assistant specialized in Enterprise Architecture (EA), designed to support strategic planning, system design, and organizational alignment across business, data, application, and technology layers.
 
 You help users analyze complex organizations, clarify business capabilities, map processes, design target architectures, and evaluate trade-offs between people, process, and technology. You can assist with frameworks such as TOGAF, Zachman, ArchiMate, BMC, or custom EA models, while adapting explanations to the user's level of technical understanding.
 
@@ -1538,8 +1537,24 @@ Your primary goal is to help the user:
             showToast('Sample data loaded successfully!', 'success');
         }
 
-        // --- Typhoon API (Server-side) ---
-        async function callTyphoon(prompt, buttonId, textId, originalText, isIcon = false, options = {}) {
+        function extractTextFromOpenAIRaw(raw) {
+            if (!raw || !Array.isArray(raw.output)) return '';
+            return raw.output
+                .filter(part => part.type === 'message')
+                .map(part => {
+                    const chunks = Array.isArray(part.content)
+                        ? part.content
+                            .filter(chunk => chunk.type === 'output_text' || chunk.type === 'text')
+                            .map(chunk => chunk.text)
+                        : [];
+                    return chunks.join('\n').trim();
+                })
+                .join('\n\n')
+                .trim();
+        }
+
+        // --- OpenAI API (Server-side) ---
+        async function callOpenAI(prompt, buttonId, textId, originalText, isIcon = false, options = {}) {
             const token = localStorage.getItem('ea_session');
             if (!token) {
                 showToast('กรุณาเข้าสู่ระบบใหม่', 'error');
@@ -1614,37 +1629,38 @@ Your primary goal is to help the user:
                         });
                     } else {
                         // Generic response for single field generation
-                        mockResponse = "นี่คือเนื้อหาตัวอย่างที่สร้างโดย AI สำหรับฟิลด์นี้ ในการใช้งานจริงจะเรียกใช้ Typhoon API จาก SCB 10X";
+                        mockResponse = "นี่คือเนื้อหาตัวอย่างที่สร้างโดย AI สำหรับฟิลด์นี้ ในการใช้งานจริงจะเรียกใช้ OpenAI GPT-5.2 mini";
                     }
                     
                     return mockResponse;
                 } else {
                     // Production: Call actual API
-                    const systemPromptLength = TYPHOON_SYSTEM_PROMPT.length;
+                    const systemPromptLength = OPENAI_SYSTEM_PROMPT.length;
                     const approxPromptTokens = Math.ceil((systemPromptLength + prompt.length) / 4);
-                    const minCompletionTokens = approxPromptTokens + 50;
-                    const requestedCompletionTokens = typeof options.max_completion_tokens === 'number'
-                        ? options.max_completion_tokens
-                        : 6000;
-                    const computedCompletionTokens = Math.max(minCompletionTokens, requestedCompletionTokens);
+                    const minOutputTokens = approxPromptTokens + 50;
+                    const requestedOutputTokens = typeof options.max_output_tokens === 'number'
+                        ? options.max_output_tokens
+                        : 1200;
+                    const computedOutputTokens = Math.max(minOutputTokens, requestedOutputTokens);
 
                     const requestPayload = {
                         messages: [
-                             { role: 'system', content: TYPHOON_SYSTEM_PROMPT },
+                             { role: 'system', content: OPENAI_SYSTEM_PROMPT },
                              { role: 'user', content: prompt }
                         ],
                         temperature: typeof options.temperature === 'number' ? options.temperature : 0.7,
-                        top_p: typeof options.top_p === 'number' ? options.top_p : 0.6,
+                        top_p: typeof options.top_p === 'number' ? options.top_p : 0.8,
                         frequency_penalty: typeof options.frequency_penalty === 'number' ? options.frequency_penalty : 0,
-                        max_completion_tokens: Math.min(60000, computedCompletionTokens),
-                        stream: !!options.stream
+                        max_output_tokens: Math.min(8000, computedOutputTokens),
+                        text_format: options.text_format || 'text',
+                        text_verbosity: options.text_verbosity || (options.expectJson ? 'low' : 'medium'),
+                        reasoning_effort: options.reasoning_effort || 'medium',
+                        tools: options.tools || [],
+                        include: options.include,
+                        store: typeof options.store === 'boolean' ? options.store : true
                     };
 
-                    if (options.expectJson) {
-                        requestPayload.response_format = { type: 'json_object' };
-                    }
-
-                    const response = await fetch(getApiUrl('/api/typhoon'), {
+                    const response = await fetch(getApiUrl('/api/openai'), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1659,13 +1675,16 @@ Your primary goal is to help the user:
                     }
 
                     const data = await response.json();
-                    if (data.success && data.data.choices && data.data.choices.length > 0) {
-                        return data.data.choices[0].message.content;
+                    if (data.success) {
+                        const extracted = data.data?.text || extractTextFromOpenAIRaw(data.data?.raw);
+                        if (extracted) {
+                            return extracted;
+                        }
                     }
-                    throw new Error("No response choices");
+                    throw new Error("No AI response");
                 }
             } catch (error) {
-                console.error('Typhoon API error:', error); 
+                console.error('OpenAI API error:', error); 
                 showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
                 return null;
             } finally {
@@ -1689,7 +1708,7 @@ Your primary goal is to help the user:
             If specific info is missing, imply reasonable assumptions for this org type.
             Return ONLY content text, no intro/outro.`;
             
-            const res = await callTyphoon(prompt, null, null, null, true);
+            const res = await callOpenAI(prompt, null, null, null, true);
             if(res) {
                 document.getElementById(fieldId).value = res.replace(/"/g, '');
                 showToast('Content generated successfully!', 'success');
@@ -1707,7 +1726,7 @@ Your primary goal is to help the user:
             const prompt = `Analyze SWOT for Organization: "${orgType}". Description: "${orgDesc}".
             IMPORTANT: Return ONLY valid JSON with keys: "strengths", "weaknesses", "opportunities", "threats".`;
 
-            const res = await callTyphoon(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT', false, { expectJson: true });
+            const res = await callOpenAI(prompt, 'btn-swot', 'btn-swot-text', 'Auto SWOT', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1733,7 +1752,7 @@ Your primary goal is to help the user:
             - Tech & Data must align with Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "biz_front", "biz_core", "biz_back", "data", "tech".`;
 
-            const res = await callTyphoon(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
+            const res = await callOpenAI(prompt, 'btn-blueprint', 'btn-blueprint-text', 'Auto Blueprint (Bullet Points)', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1757,7 +1776,7 @@ Your primary goal is to help the user:
             Task: Create IT Roadmap based on Blueprint and Goals.
             IMPORTANT: Return ONLY valid JSON with keys: "short", "medium", "long".`;
 
-            const res = await callTyphoon(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap', false, { expectJson: true });
+            const res = await callOpenAI(prompt, 'btn-roadmap', 'btn-roadmap-text', 'Auto Roadmap', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1779,7 +1798,7 @@ Your primary goal is to help the user:
             Task: Analyze Cyber Security based on Tech Architecture.
             IMPORTANT: Return ONLY valid JSON with keys: "gov", "risk", "protect", "detect", "respond".`;
 
-            const res = await callTyphoon(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze', false, { expectJson: true });
+            const res = await callOpenAI(prompt, 'btn-security', 'btn-security-text', 'Auto Analyze', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
@@ -1813,7 +1832,7 @@ Your primary goal is to help the user:
             "exec_kpis", "exec_csf", "project_metrics", "project_milestones", 
             "it_performance", "it_health", "security_metrics", "risk_indicators"`;
 
-            const res = await callTyphoon(prompt, 'btn-dashboard', 'btn-dashboard-text', 'Generate Dashboard', false, { expectJson: true });
+            const res = await callOpenAI(prompt, 'btn-dashboard', 'btn-dashboard-text', 'Generate Dashboard', false, { expectJson: true });
             if(res) {
                 try {
                     const data = JSON.parse(res.replace(/```json|```/g, '').trim());
