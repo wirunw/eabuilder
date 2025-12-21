@@ -544,19 +544,21 @@
             color: #94a3b8;
         }
 
-        .auto-rows-fr {
-            grid-auto-rows: 1fr;
-        }
-
+        .responsive-grid-wide,
         .blueprint-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.25rem;
+            gap: 1.5rem;
             width: 100%;
+            align-items: stretch;
         }
 
-        .blueprint-grid textarea {
-            min-height: 260px;
+        .responsive-grid-medium {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            align-items: stretch;
         }
 
         .blueprint-pair-grid {
@@ -564,6 +566,23 @@
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
             gap: 1.5rem;
             width: 100%;
+            align-items: stretch;
+        }
+
+        .responsive-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .blueprint-grid textarea {
+            min-height: 260px;
+        }
+
+        .full-span {
+            grid-column: 1 / -1;
         }
 
         /* Enhanced AI Button Styling */
@@ -1083,7 +1102,7 @@
             <main class="flex-1 bg-gradient-to-br from-gray-50 to-gray-100 overflow-y-auto main-content">
                 
                 <!-- Enhanced Welcome Screen -->
-                <div id="content-welcome" class="step-content active max-w-4xl mx-auto p-8 pt-12">
+                <div id="content-welcome" class="step-content active p-8 pt-12">
                     <div class="text-center">
                         <div class="inline-block p-8 rounded-3xl bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 mb-8 relative overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-br from-red-100 to-orange-100 opacity-50"></div>
@@ -1140,7 +1159,7 @@
                 </div>
 
                 <!-- Step A: Context Analysis -->
-                <div id="content-A" class="step-content max-w-5xl mx-auto p-8" hidden>
+                <div id="content-A" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-blue-600 font-bold uppercase tracking-wide text-xs">Phase 1</span>
@@ -1150,32 +1169,30 @@
 
                     <!-- Enhanced Org Input -->
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 mb-6">
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="flex gap-4">
-                                <div class="w-1/3">
-                                    <label class="text-xs font-bold text-gray-500 uppercase">ประเภทองค์กร / ธุรกิจ</label>
-                                    <input type="text" id="ai-input-org-type" class="w-full text-sm border rounded-lg p-3 mt-1" placeholder="เช่น ร้านยาชุมชน, บริษัท Logistics">
-                                </div>
-                                <div class="w-2/3">
-                                    <label class="text-xs font-bold text-gray-500 uppercase">คำอธิบายสังเขป (Short Description)</label>
-                                    <textarea id="ai-input-org-desc" class="w-full text-sm border rounded-lg p-3 mt-1" rows="2" placeholder="เช่น เน้นบริการผู้ป่วยเรื้อรัง ต้องการนำ RPA มาใช้ลดงานเอกสาร..."></textarea>
-                                </div>
+                        <div class="responsive-grid-medium">
+                            <div class="input-group">
+                                <label class="text-xs font-bold text-gray-500 uppercase">ประเภทองค์กร / ธุรกิจ</label>
+                                <input type="text" id="ai-input-org-type" class="w-full text-sm border rounded-lg p-3 mt-1" placeholder="เช่น ร้านยาชุมชน, บริษัท Logistics">
                             </div>
-                            <div class="flex justify-end">
+                            <div class="input-group">
+                                <label class="text-xs font-bold text-gray-500 uppercase">คำอธิบายสังเขป (Short Description)</label>
+                                <textarea id="ai-input-org-desc" class="w-full text-sm border rounded-lg p-3 mt-1" rows="2" placeholder="เช่น เน้นบริการผู้ป่วยเรื้อรัง ต้องการนำ RPA มาใช้ลดงานเอกสาร..."></textarea>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-4">
                                 <button onclick="generateSWOT()" id="btn-swot" class="btn-ai text-sm px-6 py-3 rounded-lg shadow-sm flex items-center whitespace-nowrap">
                                     <span id="btn-swot-icon"><i class="fas fa-wand-magic-sparkles mr-2"></i></span>
                                     <span id="btn-swot-text">Generate Full SWOT Analysis</span>
                                 </button>
-                            </div>
-                            <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 space-y-1">
+                        </div>
+                        <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 space-y-1">
                                 <p>⚠️ OpenAI GPT-5.2 mini จำกัดปริมาณคำสั่งตามโควต้าบัญชี – กรุณาเว้นช่วง 2–3 วินาทีระหว่างการกดปุ่ม Auto</p>
                                 <p>⚠️ หากขึ้น “OpenAI API error” อาจเกิดจากกดถี่หรือข้อความยาวเกิน ให้รอสักครู่แล้วลองใหม่ หรือปรับลดเนื้อหาที่ไม่จำเป็น</p>
                                 <p>⚠️ ถ้าไม่ได้ใช้งานนานหรือลบ cookie ระบบจะให้ login ใหม่เพื่อความปลอดภัยก่อนใช้ AI</p>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="responsive-grid-medium">
                         <!-- Internal -->
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                             <h3 class="font-bold text-lg mb-4 text-blue-800 border-b pb-2">Internal Factors (ภายใน)</h3>
@@ -1217,9 +1234,9 @@
                              </div>
                         </div>
                         <!-- Context -->
-                        <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 full-span">
                             <h3 class="font-bold text-lg mb-4 text-blue-800 border-b pb-2">Strategic Context</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="responsive-grid-medium">
                                 <div class="input-group">
                                     <label>
                                         Constraints (ข้อจำกัดหลัก)
@@ -1247,7 +1264,7 @@
                 </div>
 
                 <!-- Step B: Direction Management -->
-                <div id="content-B" class="step-content max-w-5xl mx-auto p-8" hidden>
+                <div id="content-B" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-green-600 font-bold uppercase tracking-wide text-xs">Phase 2</span>
@@ -1258,7 +1275,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100 mb-6">
                         <h3 class="font-bold text-lg mb-4">กำหนดกรอบคิดเชิงยุทธศาสตร์</h3>
                         <p class="text-xs text-gray-500 mb-4">* AI จะนำข้อมูล Context จาก Phase 1 มาช่วยคิดในส่วนนี้</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="responsive-grid-medium">
                             <div class="input-group">
                                 <label>
                                     Global Trends & Drivers
@@ -1273,7 +1290,7 @@
                                 </label>
                                 <textarea id="input-stakeholders" rows="3" placeholder="ลูกค้าต้องการความรวดเร็ว..."></textarea>
                             </div>
-                            <div class="input-group md:col-span-2">
+                            <div class="input-group full-span">
                                 <label>
                                     Strategic Intent / Goals
                                     <button onclick="generateSingleField('input-goals', 'Strategic Intent / Goals')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
@@ -1302,7 +1319,7 @@
                 </div>
 
                 <!-- Step C: Blueprint Management -->
-                <div id="content-C" class="step-content max-w-5xl mx-auto p-8" hidden>
+                <div id="content-C" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-yellow-600 font-bold uppercase tracking-wide text-xs">Phase 3</span>
@@ -1368,7 +1385,7 @@
                 </div>
 
                 <!-- Step D: Roadmap Management -->
-                <div id="content-D" class="step-content max-w-5xl mx-auto p-8" hidden>
+                <div id="content-D" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-rose-600 font-bold uppercase tracking-wide text-xs">Phase 4</span>
@@ -1400,7 +1417,7 @@
 
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-rose-100">
                         <h3 class="font-bold text-lg mb-4">Balanced Scorecard KPIs</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="responsive-grid-medium">
                             <div class="input-group">
                                 <label class="text-sm font-bold text-yellow-700">Finance <button onclick="generateSingleField('input-bsc-finance', 'Financial KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
                                 <textarea id="input-bsc-finance" rows="2" placeholder="ROI, Cost..."></textarea>
@@ -1431,7 +1448,7 @@
                         </div>
                         <p class="text-sm text-gray-600 mb-4">* สร้าง Dashboard และ KPIs สำหรับการ Monitor ผลงานในแต่ละแผนก</p>
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="responsive-grid-medium">
                             <!-- Executive Dashboard -->
                             <div class="bg-gradient-to-br from-rose-50 to-pink-50 p-4 rounded-lg border border-rose-200">
                                 <h4 class="font-semibold text-rose-800 mb-3 flex items-center gap-2">
@@ -1524,7 +1541,7 @@
                 </div>
 
                 <!-- Step E: Security & Governance -->
-                <div id="content-E" class="step-content max-w-5xl mx-auto p-8" hidden>
+                <div id="content-E" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-cyan-600 font-bold uppercase tracking-wide text-xs">Phase 5</span>
@@ -1537,17 +1554,58 @@
                     </div>
 
                     <div class="bg-cyan-50 border border-cyan-200 rounded-xl p-6 mb-6">
-                        <p class="text-cyan-800 mb-6 text-sm">
-                            <i class="fas fa-info-circle mr-1"></i> Cross-cutting Architecture 5 มิติ
+                        <p class="text-cyan-800 mb-6 text-sm flex items-center gap-2">
+                            <i class="fas fa-info-circle"></i>
+                            Cross-cutting Architecture 5 มิติ
                         </p>
                         
-                        <div class="space-y-6">
+                        <div class="responsive-grid-medium">
                             <!-- 5 Security Controls -->
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">1. Governance & Policy <button onclick="generateSingleField('input-gov', 'Security Governance & Policy')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-gov" rows="3" placeholder="ระบุผู้รับผิดชอบ..."></textarea></div></div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">2. Risk Identification <button onclick="generateSingleField('input-risk', 'Cybersecurity Risk Analysis')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-risk" rows="3" placeholder="ความเสี่ยงหลัก..."></textarea></div></div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">3. Protection Controls <button onclick="generateSingleField('input-protect', 'Cybersecurity Protection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-protect" rows="3" placeholder="มาตรการป้องกัน..."></textarea></div></div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">4. Detection Controls <button onclick="generateSingleField('input-detect', 'Cybersecurity Detection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-detect" rows="3" placeholder="มาตรการตรวจจับ..."></textarea></div></div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">5. Response & Recovery <button onclick="generateSingleField('input-respond', 'Cybersecurity Response & Recovery Plan')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-respond" rows="3" placeholder="แผนกู้คืน..."></textarea></div></div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack">
+                                <div class="input-group">
+                                    <label class="text-cyan-800">
+                                        1. Governance & Policy
+                                        <button onclick="generateSingleField('input-gov', 'Security Governance & Policy')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
+                                    </label>
+                                    <textarea id="input-gov" class="structured-textarea short" placeholder="ระบุผู้รับผิดชอบ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack">
+                                <div class="input-group">
+                                    <label class="text-cyan-800">
+                                        2. Risk Identification
+                                        <button onclick="generateSingleField('input-risk', 'Cybersecurity Risk Analysis')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
+                                    </label>
+                                    <textarea id="input-risk" class="structured-textarea short" placeholder="ความเสี่ยงหลัก..."></textarea>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack">
+                                <div class="input-group">
+                                    <label class="text-cyan-800">
+                                        3. Protection Controls
+                                        <button onclick="generateSingleField('input-protect', 'Cybersecurity Protection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
+                                    </label>
+                                    <textarea id="input-protect" class="structured-textarea short" placeholder="มาตรการป้องกัน..."></textarea>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack">
+                                <div class="input-group">
+                                    <label class="text-cyan-800">
+                                        4. Detection Controls
+                                        <button onclick="generateSingleField('input-detect', 'Cybersecurity Detection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
+                                    </label>
+                                    <textarea id="input-detect" class="structured-textarea short" placeholder="มาตรการตรวจจับ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack full-span">
+                                <div class="input-group">
+                                    <label class="text-cyan-800">
+                                        5. Response & Recovery
+                                        <button onclick="generateSingleField('input-respond', 'Cybersecurity Response & Recovery Plan')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
+                                    </label>
+                                    <textarea id="input-respond" class="structured-textarea short" placeholder="แผนกู้คืน..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1560,7 +1618,7 @@
                 </div>
 
                  <!-- Step F: Output & Monitoring -->
-                 <div id="content-F" class="step-content max-w-5xl mx-auto p-8" hidden>
+                 <div id="content-F" class="step-content p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-purple-600 font-bold uppercase tracking-wide text-xs">Phase 6</span>
