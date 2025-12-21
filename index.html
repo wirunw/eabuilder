@@ -374,10 +374,12 @@
         .main-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            width: 100%;
         }
 
         .main-content {
-            padding-inline: clamp(1rem, 3vw, 3rem);
+            padding-inline: clamp(1rem, 1.5vw, 2rem);
+            width: 100%;
         }
 
         /* Enhanced Scrollbar */
@@ -545,33 +547,28 @@
         }
 
         .responsive-grid-wide,
-        .blueprint-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
-            gap: 1.5rem;
-            width: 100%;
-            align-items: stretch;
-        }
-
-        .responsive-grid-medium {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
-            gap: 1.5rem;
-            width: 100%;
-            align-items: stretch;
-        }
-
+        .responsive-grid-medium,
+        .blueprint-grid,
         .blueprint-pair-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
+            grid-template-columns: minmax(0, 1fr);
             gap: 1.5rem;
             width: 100%;
             align-items: stretch;
+        }
+
+        @media (min-width: 1600px) {
+            .responsive-grid-medium,
+            .responsive-grid-wide,
+            .blueprint-grid,
+            .blueprint-pair-grid {
+                grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
+            }
         }
 
         .responsive-grid-compact {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.25rem;
             width: 100%;
             align-items: stretch;
@@ -884,7 +881,7 @@
         
         <!-- Enhanced Header -->
         <header class="bg-white border-b border-gray-200 shadow-lg sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="px-4 sm:px-6 lg:px-8 w-full">
                 <div class="h-16 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <!-- Mobile Menu Button -->
@@ -1202,14 +1199,14 @@
                                         Strengths (จุดแข็ง)
                                         <button onclick="generateSingleField('input-strengths', 'Strengths (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-strengths" rows="4" placeholder="เช่น ทีมงานมีความเชี่ยวชาญ..."></textarea>
+                                    <textarea id="input-strengths" rows="4" class="structured-textarea" placeholder="เช่น ทีมงานมีความเชี่ยวชาญ..."></textarea>
                                 </div>
                                 <div class="input-group">
                                     <label>
                                         Weaknesses (จุดอ่อน)
                                         <button onclick="generateSingleField('input-weaknesses', 'Weaknesses (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-weaknesses" rows="4" placeholder="เช่น ขาดแคลนบุคลากรด้าน IT..."></textarea>
+                                    <textarea id="input-weaknesses" rows="4" class="structured-textarea" placeholder="เช่น ขาดแคลนบุคลากรด้าน IT..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -1222,14 +1219,14 @@
                                         Opportunities (โอกาส)
                                         <button onclick="generateSingleField('input-opportunities', 'Opportunities (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-opportunities" rows="4" placeholder="เช่น นโยบาย Telemedicine..."></textarea>
+                                    <textarea id="input-opportunities" rows="4" class="structured-textarea" placeholder="เช่น นโยบาย Telemedicine..."></textarea>
                                 </div>
                                  <div class="input-group">
                                     <label>
                                         Threats (อุปสรรค)
                                         <button onclick="generateSingleField('input-threats', 'Threats (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-threats" rows="4" placeholder="เช่น กฎระเบียบที่เข้มงวด..."></textarea>
+                                    <textarea id="input-threats" rows="4" class="structured-textarea" placeholder="เช่น กฎระเบียบที่เข้มงวด..."></textarea>
                                 </div>
                              </div>
                         </div>
@@ -1242,14 +1239,14 @@
                                         Constraints (ข้อจำกัดหลัก)
                                         <button onclick="generateSingleField('input-constraints', 'Strategic Constraints')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-constraints" rows="3" placeholder="งบประมาณ, กฎหมาย PDPA..."></textarea>
+                                    <textarea id="input-constraints" rows="3" class="structured-textarea short" placeholder="งบประมาณ, กฎหมาย PDPA..."></textarea>
                                 </div>
                                 <div class="input-group">
                                     <label>
                                         Vision & Mission
                                         <button onclick="generateSingleField('input-vision', 'Vision and Mission statement')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                     </label>
-                                    <textarea id="input-vision" rows="3" placeholder="ระบุวิสัยทัศน์พันธกิจ..."></textarea>
+                                    <textarea id="input-vision" rows="3" class="structured-textarea short" placeholder="ระบุวิสัยทัศน์พันธกิจ..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -1662,7 +1659,7 @@
 
         <!-- Footer with Credit -->
         <footer class="bg-white border-t border-gray-200 py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="px-4 sm:px-6 lg:px-8 w-full">
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         <i class="fas fa-code mr-1"></i>
