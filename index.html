@@ -550,19 +550,34 @@
         .responsive-grid-medium,
         .blueprint-grid,
         .blueprint-pair-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
             width: 100%;
-            align-items: stretch;
         }
 
         .responsive-grid-compact {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 1.25rem;
             width: 100%;
-            align-items: stretch;
+        }
+
+        @media (min-width: 1600px) {
+            .responsive-grid-medium,
+            .responsive-grid-wide,
+            .blueprint-grid,
+            .blueprint-pair-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
+                align-items: stretch;
+            }
+
+            .responsive-grid-compact {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                align-items: stretch;
+            }
         }
 
         .blueprint-grid textarea {
