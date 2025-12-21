@@ -547,7 +547,7 @@
         .responsive-grid-wide,
         .blueprint-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
             gap: 1.5rem;
             width: 100%;
             align-items: stretch;
@@ -555,7 +555,7 @@
 
         .responsive-grid-medium {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
             gap: 1.5rem;
             width: 100%;
             align-items: stretch;
@@ -563,7 +563,7 @@
 
         .blueprint-pair-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
             gap: 1.5rem;
             width: 100%;
             align-items: stretch;
@@ -1281,21 +1281,21 @@
                                     Global Trends & Drivers
                                     <button onclick="generateSingleField('input-trends', 'Global Trends')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-trends" rows="3" placeholder="AI in Healthcare, Telepharmacy..."></textarea>
+                                <textarea id="input-trends" rows="3" class="structured-textarea short" placeholder="AI in Healthcare, Telepharmacy..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label>
                                     Stakeholder Expectations
                                     <button onclick="generateSingleField('input-stakeholders', 'Stakeholder Expectations')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-stakeholders" rows="3" placeholder="ลูกค้าต้องการความรวดเร็ว..."></textarea>
+                                <textarea id="input-stakeholders" rows="3" class="structured-textarea short" placeholder="ลูกค้าต้องการความรวดเร็ว..."></textarea>
                             </div>
                             <div class="input-group full-span">
                                 <label>
                                     Strategic Intent / Goals
                                     <button onclick="generateSingleField('input-goals', 'Strategic Intent / Goals')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-goals" rows="4" placeholder="เป้าหมายเชิงกลยุทธ์..."></textarea>
+                                <textarea id="input-goals" rows="4" class="structured-textarea" placeholder="เป้าหมายเชิงกลยุทธ์..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -1306,7 +1306,7 @@
                                 <span class="flex items-center gap-2"><i class="fas fa-gavel"></i> Design Principles & Enablers</span>
                                 <button onclick="generateSingleField('input-principles', 'IT Design Principles')" class="btn-ai-field" title="Auto-fill"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                              </label>
-                             <textarea id="input-principles" rows="4" class="bg-white" placeholder="- Mobile First Design&#10;- Zero Trust Security..."></textarea>
+                             <textarea id="input-principles" rows="4" class="structured-textarea" placeholder="- Mobile First Design&#10;- Zero Trust Security..."></textarea>
                         </div>
                     </div>
 
@@ -1420,19 +1420,19 @@
                         <div class="responsive-grid-medium">
                             <div class="input-group">
                                 <label class="text-sm font-bold text-yellow-700">Finance <button onclick="generateSingleField('input-bsc-finance', 'Financial KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-bsc-finance" rows="2" placeholder="ROI, Cost..."></textarea>
+                                <textarea id="input-bsc-finance" rows="2" class="structured-textarea short" placeholder="ROI, Cost..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label class="text-sm font-bold text-blue-700">Customer <button onclick="generateSingleField('input-bsc-customer', 'Customer KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-bsc-customer" rows="2" placeholder="Satisfaction..."></textarea>
+                                <textarea id="input-bsc-customer" rows="2" class="structured-textarea short" placeholder="Satisfaction..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label class="text-sm font-bold text-green-700">Internal Process <button onclick="generateSingleField('input-bsc-process', 'Process KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-bsc-process" rows="2" placeholder="Efficiency..."></textarea>
+                                <textarea id="input-bsc-process" rows="2" class="structured-textarea short" placeholder="Efficiency..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label class="text-sm font-bold text-purple-700">Learning & Growth <button onclick="generateSingleField('input-bsc-learning', 'Learning KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-bsc-learning" rows="2" placeholder="Upskill..."></textarea>
+                                <textarea id="input-bsc-learning" rows="2" class="structured-textarea short" placeholder="Upskill..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -1458,11 +1458,11 @@
                                 <div class="space-y-3">
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-rose-700">Key Performance Indicators <button onclick="generateSingleField('input-exec-kpis', 'Executive Dashboard KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-exec-kpis" rows="3" placeholder="Revenue Growth, Market Share, Customer Satisfaction..." class="bg-white"></textarea>
+                                        <textarea id="input-exec-kpis" rows="3" class="structured-textarea short" placeholder="Revenue Growth, Market Share, Customer Satisfaction..."></textarea>
                                     </div>
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-rose-700">Critical Success Factors <button onclick="generateSingleField('input-exec-csf', 'Executive Critical Success Factors')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-exec-csf" rows="2" placeholder="Innovation, Operational Excellence, Customer Focus..." class="bg-white"></textarea>
+                                        <textarea id="input-exec-csf" rows="2" class="structured-textarea short" placeholder="Innovation, Operational Excellence, Customer Focus..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1476,11 +1476,11 @@
                                 <div class="space-y-3">
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-blue-700">Project Metrics <button onclick="generateSingleField('input-project-metrics', 'Project Management Metrics')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-project-metrics" rows="3" placeholder="Timeline Adherence, Budget Variance, Resource Utilization..." class="bg-white"></textarea>
+                                        <textarea id="input-project-metrics" rows="3" class="structured-textarea short" placeholder="Timeline Adherence, Budget Variance, Resource Utilization..."></textarea>
                                     </div>
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-blue-700">Milestone Tracking <button onclick="generateSingleField('input-project-milestones', 'Project Milestone Tracking')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-project-milestones" rows="2" placeholder="Phase Completion, Deliverable Status, Risk Mitigation..." class="bg-white"></textarea>
+                                        <textarea id="input-project-milestones" rows="2" class="structured-textarea short" placeholder="Phase Completion, Deliverable Status, Risk Mitigation..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1494,11 +1494,11 @@
                                 <div class="space-y-3">
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-green-700">System Performance KPIs <button onclick="generateSingleField('input-it-performance', 'IT Performance KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-it-performance" rows="3" placeholder="Uptime, Response Time, Throughput, Error Rate..." class="bg-white"></textarea>
+                                        <textarea id="input-it-performance" rows="3" class="structured-textarea short" placeholder="Uptime, Response Time, Throughput, Error Rate..."></textarea>
                                     </div>
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-green-700">Infrastructure Health <button onclick="generateSingleField('input-it-health', 'IT Infrastructure Health Metrics')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-it-health" rows="2" placeholder="Server Status, Network Performance, Storage Capacity..." class="bg-white"></textarea>
+                                        <textarea id="input-it-health" rows="2" class="structured-textarea short" placeholder="Server Status, Network Performance, Storage Capacity..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1512,11 +1512,11 @@
                                 <div class="space-y-3">
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-purple-700">Security Metrics <button onclick="generateSingleField('input-security-metrics', 'Security Dashboard Metrics')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-security-metrics" rows="3" placeholder="Incident Response Time, Vulnerability Count, Compliance Score..." class="bg-white"></textarea>
+                                        <textarea id="input-security-metrics" rows="3" class="structured-textarea short" placeholder="Incident Response Time, Vulnerability Count, Compliance Score..."></textarea>
                                     </div>
                                     <div class="input-group">
                                         <label class="text-sm font-medium text-purple-700">Risk Indicators <button onclick="generateSingleField('input-risk-indicators', 'Security Risk Indicators')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                        <textarea id="input-risk-indicators" rows="2" placeholder="Threat Level, Security Posture, Audit Findings..." class="bg-white"></textarea>
+                                        <textarea id="input-risk-indicators" rows="2" class="structured-textarea short" placeholder="Threat Level, Security Posture, Audit Findings..."></textarea>
                                     </div>
                                 </div>
                             </div>
