@@ -462,7 +462,9 @@
             display: none;
             animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
-            max-width: min(78rem, 100%);
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .step-content.active {
@@ -544,6 +546,24 @@
 
         .auto-rows-fr {
             grid-auto-rows: 1fr;
+        }
+
+        .blueprint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .blueprint-grid textarea {
+            min-height: 260px;
+        }
+
+        .blueprint-pair-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
         }
 
         /* Enhanced AI Button Styling */
@@ -1300,7 +1320,7 @@
                             <h4 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
                                 <i class="fas fa-briefcase text-yellow-500"></i> 1. Business Architecture
                             </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-fr">
+                            <div class="blueprint-grid">
                                 <div class="input-group field-stack">
                                     <label class="text-sm">Front Office <button onclick="generateSingleField('input-biz-front', 'Front Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
                                     <textarea id="input-biz-front" class="structured-textarea" rows="6" placeholder="- Channel A&#10;- CRM System"></textarea>
@@ -1317,7 +1337,7 @@
                         </div>
 
                         <!-- Data & Tech -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
+                        <div class="blueprint-pair-grid">
                             <div class="bg-white p-6 rounded-xl border-l-4 border-yellow-400 shadow-sm">
                                 <div class="input-group field-stack">
                                     <label>
