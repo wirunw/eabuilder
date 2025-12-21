@@ -376,6 +376,10 @@
             backdrop-filter: blur(10px);
         }
 
+        .main-content {
+            padding-inline: clamp(1rem, 3vw, 3rem);
+        }
+
         /* Enhanced Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
@@ -457,6 +461,8 @@
         .step-content {
             display: none;
             animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            max-width: min(78rem, 100%);
         }
         
         .step-content.active {
@@ -510,6 +516,36 @@
             transform: translateY(-1px);
         }
 
+        .field-stack {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .field-stack textarea {
+            flex: 1;
+        }
+
+        .structured-textarea {
+            min-height: 220px;
+            background: #f8fafc;
+            border-color: #cbd5f5;
+            font-family: 'Sarabun', 'Inter', sans-serif;
+            white-space: pre-line;
+        }
+
+        .structured-textarea.short {
+            min-height: 140px;
+        }
+
+        .structured-textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        .auto-rows-fr {
+            grid-auto-rows: 1fr;
+        }
+
         /* Enhanced AI Button Styling */
         .btn-ai {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
@@ -518,6 +554,7 @@
             border: none;
             position: relative;
             overflow: hidden;
+            font-weight: 600;
         }
         
         .btn-ai::before {
@@ -546,6 +583,11 @@
         .btn-ai:active {
             transform: translateY(0);
         }
+
+        .btn-ai.is-loading {
+            cursor: wait;
+            opacity: 0.85;
+        }
         
         .btn-ai-light {
             background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
@@ -563,22 +605,34 @@
         .btn-ai-field {
             font-size: 0.75rem;
             color: var(--primary-color);
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
             border: 1px solid #fecaca;
             padding: 6px 12px;
             border-radius: 9999px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
-            font-weight: 500;
+            gap: 6px;
+            font-weight: 600;
         }
         
         .btn-ai-field:hover {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            border-color: #fca5a5;
+            background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+            border-color: #fda4af;
             transform: scale(1.05);
+        }
+
+        .btn-ai-field.is-loading {
+            cursor: wait;
+            opacity: 0.8;
+        }
+
+        .loading-text {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
         }
 
         /* Enhanced Modal */
@@ -1246,40 +1300,40 @@
                             <h4 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
                                 <i class="fas fa-briefcase text-yellow-500"></i> 1. Business Architecture
                             </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="input-group">
+                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-fr">
+                                <div class="input-group field-stack">
                                     <label class="text-sm">Front Office <button onclick="generateSingleField('input-biz-front', 'Front Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                    <textarea id="input-biz-front" rows="6" placeholder="- Channel A&#10;- CRM System"></textarea>
+                                    <textarea id="input-biz-front" class="structured-textarea" rows="6" placeholder="- Channel A&#10;- CRM System"></textarea>
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group field-stack">
                                     <label class="text-sm">Core Operations <button onclick="generateSingleField('input-biz-core', 'Core Operations (Bullet points)')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                    <textarea id="input-biz-core" rows="6" placeholder="- Order Mgmt&#10;- Production"></textarea>
+                                    <textarea id="input-biz-core" class="structured-textarea" rows="6" placeholder="- Order Mgmt&#10;- Production"></textarea>
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group field-stack">
                                     <label class="text-sm">Back Office <button onclick="generateSingleField('input-biz-back', 'Back Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
-                                    <textarea id="input-biz-back" rows="6" placeholder="- HR System&#10;- Accounting"></textarea>
+                                    <textarea id="input-biz-back" class="structured-textarea" rows="6" placeholder="- HR System&#10;- Accounting"></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Data & Tech -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
                             <div class="bg-white p-6 rounded-xl border-l-4 border-yellow-400 shadow-sm">
-                                <div class="input-group">
+                                <div class="input-group field-stack">
                                     <label>
                                         <span class="flex items-center gap-2"><i class="fas fa-database text-yellow-500"></i> 2. Data Architecture</span>
                                         <button onclick="generateSingleField('input-data-arch', 'Data Architecture')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                      </label>
-                                    <textarea id="input-data-arch" rows="4" placeholder="Master Data Entities..."></textarea>
+                                    <textarea id="input-data-arch" class="structured-textarea short" rows="4" placeholder="Master Data Entities..."></textarea>
                                 </div>
                             </div>
                             <div class="bg-white p-6 rounded-xl border-l-4 border-yellow-400 shadow-sm">
-                                <div class="input-group">
+                                <div class="input-group field-stack">
                                     <label>
                                         <span class="flex items-center gap-2"><i class="fas fa-server text-yellow-500"></i> 3. Technology Architecture</span>
                                         <button onclick="generateSingleField('input-tech-arch', 'Technology Architecture')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i> AI</button>
                                      </label>
-                                    <textarea id="input-tech-arch" rows="4" placeholder="Platforms, Cloud..."></textarea>
+                                    <textarea id="input-tech-arch" class="structured-textarea short" rows="4" placeholder="Platforms, Cloud..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -2048,18 +2102,22 @@ Your primary goal is to help the user:
             const button = buttonId ? document.getElementById(buttonId) : null;
             const textSpan = textId ? document.getElementById(textId) : null;
             const iconSpan = buttonId ? document.getElementById(buttonId + '-icon') : null;
-            const btnElement = buttonId ? null : event.currentTarget;
+            const btnElement = (!buttonId && typeof event !== 'undefined') ? event.currentTarget : null;
 
             let originalContent = "";
             if (button) {
                 originalContent = iconSpan.innerHTML;
-                if(textSpan) textSpan.innerText = ' Thinking...';
+                if(textSpan) textSpan.innerText = 'กำลังสร้าง...';
                 button.disabled = true;
+                button.classList.add('is-loading');
+                button.setAttribute('aria-busy', 'true');
                 iconSpan.innerHTML = '<span class="loading-spinner"></span>';
             } else if (btnElement) {
                 originalContent = btnElement.innerHTML;
                 btnElement.disabled = true;
-                btnElement.innerHTML = '<span class="loading-spinner-dark"></span>';
+                btnElement.classList.add('is-loading');
+                btnElement.setAttribute('aria-busy', 'true');
+                btnElement.innerHTML = '<span class="loading-spinner-dark"></span><span class="loading-text">กำลังสร้าง...</span>';
             }
 
             try {
@@ -2170,11 +2228,15 @@ Your primary goal is to help the user:
             } finally {
                 if (button) {
                     if(textSpan) textSpan.innerText = originalText;
-                    iconSpan.innerHTML = originalContent;
+                    if (iconSpan) iconSpan.innerHTML = originalContent;
                     button.disabled = false;
+                    button.classList.remove('is-loading');
+                    button.removeAttribute('aria-busy');
                 } else if (btnElement) {
                     btnElement.innerHTML = originalContent;
                     btnElement.disabled = false;
+                    btnElement.classList.remove('is-loading');
+                    btnElement.removeAttribute('aria-busy');
                 }
             }
         }
