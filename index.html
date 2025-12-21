@@ -546,38 +546,15 @@
             color: #94a3b8;
         }
 
-        .responsive-grid-wide,
-        .responsive-grid-medium,
-        .blueprint-grid,
-        .blueprint-pair-grid {
+        .section-stack {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
             width: 100%;
         }
 
-        .responsive-grid-compact {
-            display: flex;
-            flex-direction: column;
+        .section-stack.tight {
             gap: 1.25rem;
-            width: 100%;
-        }
-
-        @media (min-width: 1600px) {
-            .responsive-grid-medium,
-            .responsive-grid-wide,
-            .blueprint-grid,
-            .blueprint-pair-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(640px, 1fr));
-                align-items: stretch;
-            }
-
-            .responsive-grid-compact {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-                align-items: stretch;
-            }
         }
 
         .blueprint-grid textarea {
@@ -1172,7 +1149,7 @@
 
                     <!-- Enhanced Org Input -->
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 mb-6">
-                        <div class="responsive-grid-medium">
+                        <div class="section-stack">
                             <div class="input-group">
                                 <label class="text-xs font-bold text-gray-500 uppercase">ประเภทองค์กร / ธุรกิจ</label>
                                 <input type="text" id="ai-input-org-type" class="w-full text-sm border rounded-lg p-3 mt-1" placeholder="เช่น ร้านยาชุมชน, บริษัท Logistics">
@@ -1195,11 +1172,11 @@
                         </div>
                     </div>
 
-                    <div class="responsive-grid-medium">
+                    <div class="section-stack">
                         <!-- Internal -->
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                             <h3 class="font-bold text-lg mb-4 text-blue-800 border-b pb-2">Internal Factors (ภายใน)</h3>
-                            <div class="space-y-4">
+                            <div class="section-stack tight">
                                 <div class="input-group">
                                     <label>
                                         Strengths (จุดแข็ง)
@@ -1219,7 +1196,7 @@
                         <!-- External -->
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                              <h3 class="font-bold text-lg mb-4 text-blue-800 border-b pb-2">External Factors (ภายนอก)</h3>
-                             <div class="space-y-4">
+                             <div class="section-stack tight">
                                 <div class="input-group">
                                     <label>
                                         Opportunities (โอกาส)
@@ -1239,7 +1216,7 @@
                         <!-- Context -->
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 full-span">
                             <h3 class="font-bold text-lg mb-4 text-blue-800 border-b pb-2">Strategic Context</h3>
-                            <div class="responsive-grid-medium">
+                            <div class="section-stack">
                                 <div class="input-group">
                                     <label>
                                         Constraints (ข้อจำกัดหลัก)
@@ -1278,7 +1255,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100 mb-6">
                         <h3 class="font-bold text-lg mb-4">กำหนดกรอบคิดเชิงยุทธศาสตร์</h3>
                         <p class="text-xs text-gray-500 mb-4">* AI จะนำข้อมูล Context จาก Phase 1 มาช่วยคิดในส่วนนี้</p>
-                        <div class="responsive-grid-medium">
+                        <div class="section-stack">
                             <div class="input-group">
                                 <label>
                                     Global Trends & Drivers
@@ -1334,13 +1311,13 @@
                         </button>
                     </div>
 
-                    <div class="space-y-6">
+                    <div class="section-stack">
                         <!-- Business Arch -->
                         <div class="bg-white p-6 rounded-xl border-l-4 border-yellow-400 shadow-sm">
                             <h4 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
                                 <i class="fas fa-briefcase text-yellow-500"></i> 1. Business Architecture
                             </h4>
-                            <div class="blueprint-grid">
+                            <div class="section-stack blueprint-grid">
                                 <div class="input-group field-stack">
                                     <label class="text-sm">Front Office <button onclick="generateSingleField('input-biz-front', 'Front Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
                                     <textarea id="input-biz-front" class="structured-textarea" rows="6" placeholder="- Channel A&#10;- CRM System"></textarea>
@@ -1357,7 +1334,7 @@
                         </div>
 
                         <!-- Data & Tech -->
-                        <div class="blueprint-pair-grid">
+                        <div class="section-stack blueprint-pair-grid">
                             <div class="bg-white p-6 rounded-xl border-l-4 border-yellow-400 shadow-sm">
                                 <div class="input-group field-stack">
                                     <label>
@@ -1402,7 +1379,7 @@
 
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-rose-100 mb-6">
                         <h3 class="font-bold text-lg mb-4 text-rose-800">Transition Architecture (Timeline)</h3>
-                        <div class="space-y-4">
+                        <div class="section-stack">
                             <div class="input-group pl-4 border-l-4 border-rose-200">
                                 <label>Short Term (Quick Wins) <button onclick="generateSingleField('input-short-term', 'Short Term Roadmap')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
                                 <textarea id="input-short-term" rows="3" class="bg-gray-50" placeholder="โครงการระยะสั้น..."></textarea>
@@ -1420,7 +1397,7 @@
 
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-rose-100">
                         <h3 class="font-bold text-lg mb-4">Balanced Scorecard KPIs</h3>
-                        <div class="responsive-grid-medium">
+                        <div class="section-stack">
                             <div class="input-group">
                                 <label class="text-sm font-bold text-yellow-700">Finance <button onclick="generateSingleField('input-bsc-finance', 'Financial KPIs')" class="btn-ai-field"><i class="fas fa-wand-magic-sparkles"></i></button></label>
                                 <textarea id="input-bsc-finance" rows="2" class="structured-textarea short" placeholder="ROI, Cost..."></textarea>
@@ -1441,7 +1418,7 @@
                     </div>
 
                     <!-- Dashboard & Monitoring Section -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-rose-100 mt-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-rose-100 mt-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-bold text-lg text-rose-800">Dashboard & Monitoring KPIs</h3>
                             <button onclick="generateDashboard()" id="btn-dashboard" class="btn-ai text-xs px-4 py-2 rounded-lg shadow-sm flex items-center">
@@ -1451,7 +1428,7 @@
                         </div>
                         <p class="text-sm text-gray-600 mb-4">* สร้าง Dashboard และ KPIs สำหรับการ Monitor ผลงานในแต่ละแผนก</p>
                         
-                        <div class="responsive-grid-medium">
+                        <div class="section-stack">
                             <!-- Executive Dashboard -->
                             <div class="bg-gradient-to-br from-rose-50 to-pink-50 p-4 rounded-lg border border-rose-200">
                                 <h4 class="font-semibold text-rose-800 mb-3 flex items-center gap-2">
@@ -1562,7 +1539,7 @@
                             Cross-cutting Architecture 5 มิติ
                         </p>
                         
-                        <div class="responsive-grid-medium">
+                        <div class="section-stack">
                             <!-- 5 Security Controls -->
                             <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100 field-stack">
                                 <div class="input-group">
