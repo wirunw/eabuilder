@@ -25,9 +25,9 @@
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512x512.png">
-    <link rel="apple-touch-icon" href="./icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192x192.png?v=20241221">
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512x512.png?v=20241221">
+    <link rel="apple-touch-icon" href="./icon-192x192.png?v=20241221">
     <meta name="theme-color" content="#dc2626">
     
     <!-- Google Fonts: Sarabun + Inter for better readability -->
@@ -1029,7 +1029,7 @@
                 </div>
 
                 <!-- Step A: Context Analysis -->
-                <div id="content-A" class="step-content max-w-5xl mx-auto p-8">
+                <div id="content-A" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-blue-600 font-bold uppercase tracking-wide text-xs">Phase 1</span>
@@ -1136,7 +1136,7 @@
                 </div>
 
                 <!-- Step B: Direction Management -->
-                <div id="content-B" class="step-content max-w-5xl mx-auto p-8">
+                <div id="content-B" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-green-600 font-bold uppercase tracking-wide text-xs">Phase 2</span>
@@ -1191,7 +1191,7 @@
                 </div>
 
                 <!-- Step C: Blueprint Management -->
-                <div id="content-C" class="step-content max-w-5xl mx-auto p-8">
+                <div id="content-C" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-yellow-600 font-bold uppercase tracking-wide text-xs">Phase 3</span>
@@ -1257,7 +1257,7 @@
                 </div>
 
                 <!-- Step D: Roadmap Management -->
-                <div id="content-D" class="step-content max-w-5xl mx-auto p-8">
+                <div id="content-D" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-rose-600 font-bold uppercase tracking-wide text-xs">Phase 4</span>
@@ -1413,7 +1413,7 @@
                 </div>
 
                 <!-- Step E: Security & Governance -->
-                <div id="content-E" class="step-content max-w-5xl mx-auto p-8">
+                <div id="content-E" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-cyan-600 font-bold uppercase tracking-wide text-xs">Phase 5</span>
@@ -1449,7 +1449,7 @@
                 </div>
 
                  <!-- Step F: Output & Monitoring -->
-                 <div id="content-F" class="step-content max-w-5xl mx-auto p-8">
+                 <div id="content-F" class="step-content max-w-5xl mx-auto p-8" hidden>
                     <div class="flex items-center justify-between mb-8 border-b pb-6">
                         <div>
                             <span class="text-purple-600 font-bold uppercase tracking-wide text-xs">Phase 6</span>
@@ -1661,29 +1661,32 @@ Your primary goal is to help the user:
         }
 
         function switchStep(stepId) {
-            // Update current step
             currentStep = stepId;
             
-            // Update navigation
             document.querySelectorAll('.node-card').forEach(item => item.classList.remove('active', 'ring-2', 'ring-offset-1', 'ring-blue-300'));
-            document.getElementById(`nav-${stepId}`).classList.add('active', 'ring-2', 'ring-offset-1', 'ring-blue-300');
+            const navItem = document.getElementById(`nav-${stepId}`);
+            if (navItem) {
+                navItem.classList.add('active', 'ring-2', 'ring-offset-1', 'ring-blue-300');
+            }
             
-            // Update content
-            document.querySelectorAll('.step-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(`content-${stepId}`).classList.add('active');
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+                content.setAttribute('hidden', '');
+            });
             
-            // Update progress
+            const targetContent = document.getElementById(`content-${stepId}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                targetContent.removeAttribute('hidden');
+            }
+            
             updateProgressBar();
-            
-            // Scroll to top
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Auto Render Summary when entering Phase F
             if (stepId === 'F') {
                 renderSummary();
             }
             
-            // Close mobile sidebar
             if (window.innerWidth < 768) {
                 document.getElementById('sidebar').classList.remove('open');
             }
