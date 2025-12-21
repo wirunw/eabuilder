@@ -712,6 +712,14 @@
                 transform: none !important;
                 height: auto;
             }
+
+            body.sidebar-collapsed #sidebar {
+                display: none;
+            }
+
+            body.sidebar-collapsed .main-content {
+                margin-left: 0;
+            }
         }
 
         /* Print Styling */
@@ -811,6 +819,17 @@
                     </div>
                     
                     <div class="flex items-center gap-3">
+                        <!-- Desktop Sidebar Toggle -->
+                        <button 
+                            id="sidebar-toggle-btn"
+                            onclick="toggleSidebarCollapse()"
+                            class="hidden md:flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all text-sm font-medium"
+                            title="แสดงหรือซ่อนเมนูด้านซ้าย"
+                        >
+                            <i id="sidebar-toggle-icon" class="fas fa-chevron-left"></i>
+                            <span id="sidebar-toggle-text">Hide Menu</span>
+                        </button>
+                        
                         <!-- User Info -->
                         <div id="user-info" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100">
                             <i class="fas fa-user text-gray-600"></i>
@@ -1788,6 +1807,22 @@ Your primary goal is to help the user:
 
         function toggleMobileSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function toggleSidebarCollapse() {
+            const body = document.body;
+            const isCollapsed = body.classList.toggle('sidebar-collapsed');
+            const toggleText = document.getElementById('sidebar-toggle-text');
+            const toggleIcon = document.getElementById('sidebar-toggle-icon');
+            
+            if (toggleText) {
+                toggleText.textContent = isCollapsed ? 'Show Menu' : 'Hide Menu';
+            }
+            
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-chevron-left', 'fa-chevron-right');
+                toggleIcon.classList.add(isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left');
+            }
         }
 
         function showToast(message, type = 'info') {
