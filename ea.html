@@ -34,6 +34,354 @@
             background: #94a3b8; 
         }
 
+        /* ===== COMPLETE FORM SYSTEM REDESIGN ===== */
+        
+        /* Reset and Base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        /* Form Container System */
+        .form-container {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .form-control,
+        .form-textarea,
+        .form-input {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: #ffffff;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #374151;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            resize: none;
+            overflow: hidden;
+        }
+        
+        .form-control:focus,
+        .form-textarea:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Auto-expanding textarea */
+        .form-textarea {
+            min-height: 80px;
+            height: auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .input-group input,
+            .input-group textarea,
+            .input-group select,
+            textarea,
+            input[type="text"] {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .input-group input,
+            .input-group textarea,
+            .input-group select,
+            textarea,
+            input[type="text"] {
+                padding: 8px;
+                font-size: 13px;
+                min-height: 60px;
+            }
+        }
+        
+        /* Grid System Fix */
+        .form-grid {
+            display: grid;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .form-grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .form-grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        /* ===== ULTIMATE CSS OVERRIDE SYSTEM ===== */
+        
+        /* Override ALL textarea styles with MAXIMUM specificity */
+        .input-group textarea,
+        textarea,
+        form textarea,
+        .form-textarea,
+        [class*="textarea"] {
+            all: unset !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+            padding: 12px !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 8px !important;
+            background-color: #ffffff !important;
+            font-family: 'Sarabun', sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+            color: #374151 !important;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+            resize: none !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+            height: auto !important;
+            min-height: 80px !important;
+            max-height: none !important;
+        }
+        
+        /* Override ALL input styles */
+        .input-group input,
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        .form-input,
+        [class*="input"] {
+            all: unset !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+            padding: 12px !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 8px !important;
+            background-color: #ffffff !important;
+            font-family: 'Sarabun', sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+            color: #374151 !important;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Override ALL Tailwind form classes */
+        .w-full textarea,
+        .w-full input,
+        .w-\[100\%\] textarea,
+        .w-\[100\%\] input,
+        .max-w-\[none\] textarea,
+        .max-w-\[none\] input {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Override ANY grid or flex container that limits width */
+        .grid textarea,
+        .flex textarea,
+        .grid input,
+        .flex input {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Force override ANY inline styles */
+        textarea[style],
+        input[style] {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Additional fixes for flex containers */
+        .flex-1 textarea,
+        .flex-initial textarea,
+        .flex-none textarea,
+        [class*="flex"] textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Fix for input-group containers */
+        .input-group {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        .input-group textarea,
+        .input-group input {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Fix for grid containers that might constrain width */
+        [class*="grid"] [class*="input-group"],
+        [class*="grid"] textarea,
+        [class*="grid"] input {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Ensure containers don't constrain their children */
+        .w-2\/3 textarea,
+        .w-1\/3 textarea,
+        .w-1\/2 textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Enhanced Visual Hierarchy */
+        .section-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #eff6ff, transparent);
+            padding: 1rem 1rem 1rem 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .subsection-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .status-complete {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inprogress {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-missing {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* Enhanced Navigation */
+        .nav-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-item.completed {
+            background: linear-gradient(to right, #f0fdf4, #ffffff);
+        }
+        
+        .nav-item.in-progress {
+            background: linear-gradient(to right, #fef3c7, #ffffff);
+        }
+        
+        .nav-item.missing {
+            background: linear-gradient(to right, #fef2f2, #ffffff);
+        }
+        
+        /* Notification Area */
+        .notification-area {
+            position: fixed;
+            top: 4rem;
+            right: 1rem;
+            z-index: 50;
+            max-width: 400px;
+        }
+        
+        .notification {
+            background: white;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Strategic Thinking Helpers */
+        .strategic-hint {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: #0c4a6e;
+        }
+        
+        .strategic-hint i {
+            color: #0284c7;
+            margin-right: 0.5rem;
+        }
+        
+        /* Enhanced AI Buttons */
+        .btn-enhanced-ai {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-enhanced-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-enhanced-ai::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-enhanced-ai:hover::before {
+            left: 100%;
+        }
+
         /* Flowchart Node Styling */
         .node-card {
             transition: all 0.3s ease;
@@ -50,7 +398,7 @@
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
         }
 
-        /* Specific Colors matching the Mermaid Graph */
+        /* Specific Colors matching Mermaid Graph */
         .theme-A { border-left-color: #60a5fa; background-color: #eff6ff; } /* Context: Blue */
         .theme-B { border-left-color: #4ade80; background-color: #f0fdf4; } /* DM: Green */
         .theme-C { border-left-color: #fbbf24; background-color: #fffbeb; } /* BM: Amber */
@@ -79,21 +427,6 @@
             justify-content: space-between;
             align-items: center;
             font-size: 0.95rem;
-        }
-        /* Update inputs to be more spacious */
-        .input-group input, .input-group textarea, .input-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        .input-group input:focus, .input-group textarea:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         /* AI Button Styling */
@@ -235,33 +568,54 @@
                 <div class="space-y-3 relative">
                     <div class="absolute left-6 top-4 bottom-4 w-0.5 bg-gray-200 -z-10"></div>
                     <!-- Navigation Items -->
-                    <div onclick="switchStep('A')" id="nav-A" class="node-card theme-A p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('A')" id="nav-A" class="nav-item node-card theme-A p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">1</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Context Analysis</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">การวิเคราะห์บริบท</h3>
+                            <p class="text-xs text-gray-500">Context Analysis</p>
+                        </div>
                     </div>
-                    <div onclick="switchStep('B')" id="nav-B" class="node-card theme-B p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('B')" id="nav-B" class="nav-item node-card theme-B p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">2</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Direction (DM)</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">การจัดการทิศทาง</h3>
+                            <p class="text-xs text-gray-500">Direction Management</p>
+                        </div>
                     </div>
-                    <div onclick="switchStep('C')" id="nav-C" class="node-card theme-C p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('C')" id="nav-C" class="nav-item node-card theme-C p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-yellow-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">3</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Blueprint (BM)</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">แผนงานสถาปัตยกรรม</h3>
+                            <p class="text-xs text-gray-500">Blueprint Management</p>
+                        </div>
                     </div>
-                    <div onclick="switchStep('D')" id="nav-D" class="node-card theme-D p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('D')" id="nav-D" class="nav-item node-card theme-D p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-rose-400 text-white flex items-center justify-center text-xs font-bold shadow-sm">4</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Roadmap (RM)</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">แผนที่เส้นทาง</h3>
+                            <p class="text-xs text-gray-500">Roadmap Management</p>
+                        </div>
                     </div>
-                    <div onclick="switchStep('E')" id="nav-E" class="node-card theme-E p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('E')" id="nav-E" class="nav-item node-card theme-E p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-cyan-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">5</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Cybersecurity</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">ความั่นคงปลอดภัย</h3>
+                            <p class="text-xs text-gray-500">Cybersecurity</p>
+                        </div>
                     </div>
-                    <div onclick="switchStep('F')" id="nav-F" class="node-card theme-F p-3 rounded-lg flex items-center gap-3 relative z-10">
+                    <div onclick="switchStep('F')" id="nav-F" class="nav-item node-card theme-F p-3 rounded-lg flex items-center gap-3 relative z-10">
                         <div class="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">6</div>
-                        <div><h3 class="text-sm font-bold text-gray-800">Output & Monitor</h3></div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-800">ผลลัพธ์และติดตาม</h3>
+                            <p class="text-xs text-gray-500">Output & Monitor</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </aside>
+
+        <!-- Notification Area -->
+        <div id="notification-area" class="notification-area"></div>
 
         <!-- Main Workspace -->
         <main class="flex-1 bg-gray-50 overflow-y-auto p-4 sm:p-8 relative">
@@ -289,23 +643,30 @@
                     </div>
                 </div>
 
+                <!-- Strategic Hint -->
+                <div class="strategic-hint">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <strong>เคล็ดลับเชิงกลยุทธ์:</strong> เริ่มต้นด้วยการกำหนดประเภทองค์กรให้ชัดเจน จะช่วยให้ AI วิเคราะห์ SWOT ได้แม่นยำและเหมาะสมกับธุรกิจของคุณมากขึ้น
+                </div>
+
                 <!-- NEW: Enhanced Org Input -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 mb-6">
+                    <h3 class="section-header text-lg">ข้อมูลพื้นฐานองค์กร</h3>
                     <div class="grid grid-cols-1 gap-4">
                         <div class="flex gap-4">
                             <div class="w-1/3">
                                 <label class="text-xs font-bold text-gray-500 uppercase">ประเภทองค์กร / ธุรกิจ</label>
-                                <input type="text" id="ai-input-org-type" class="w-full text-sm border rounded p-2 mt-1" placeholder="เช่น ร้านยาชุมชน, บริษัท Logistics">
+                                <input type="text" id="ai-input-org-type" class="input-field" placeholder="เช่น ร้านยาชุมชน, บริษัท Logistics, โรงพยาบาลเอกชน">
                             </div>
-                            <div class="w-2/3">
+                            <div class="flex-1">
                                 <label class="text-xs font-bold text-gray-500 uppercase">คำอธิบายสังเขป (Short Description)</label>
-                                <textarea id="ai-input-org-desc" class="w-full text-sm border rounded p-2 mt-1" rows="1" placeholder="เช่น เน้นบริการผู้ป่วยเรื้อรัง ต้องการนำ RPA มาใช้ลดงานเอกสาร..."></textarea>
+                                <textarea id="ai-input-org-desc" class="form-textarea" placeholder="เช่น เน้นบริการผู้ป่วยเรื้อรัง ต้องการนำ RPA มาใช้ลดงานเอกสาร มีปัญหาด้านการจัดการสต็อกยา..."></textarea>
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button onclick="generateSWOT()" id="btn-swot" class="btn-ai text-sm px-4 py-2 rounded shadow-sm flex items-center whitespace-nowrap">
+                            <button onclick="generateSWOT()" id="btn-swot" class="btn-enhanced-ai text-sm px-6 py-3 rounded-lg shadow-md flex items-center whitespace-nowrap">
                                 <span id="btn-swot-icon"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i></span>
-                                <span id="btn-swot-text">Generate Full SWOT Analysis</span>
+                                <span id="btn-swot-text">วิเคราะห์ SWOT อัตโนมัติ</span>
                             </button>
                         </div>
                     </div>
@@ -321,14 +682,14 @@
                                     Strengths (จุดแข็ง)
                                     <button onclick="generateSingleField('input-strengths', 'Strengths (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-strengths" rows="4" placeholder="เช่น ทีมงานมีความเชี่ยวชาญ..."></textarea>
+                                <textarea id="input-strengths" class="form-textarea" placeholder="เช่น ทีมงานมีความเชี่ยวชาญ..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label>
                                     Weaknesses (จุดอ่อน)
                                     <button onclick="generateSingleField('input-weaknesses', 'Weaknesses (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-weaknesses" rows="4" placeholder="เช่น ขาดแคลนบุคลากรด้าน IT..."></textarea>
+                                <textarea id="input-weaknesses" class="form-textarea" placeholder="เช่น ขาดแคลนบุคลากรด้าน IT..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -341,14 +702,14 @@
                                     Opportunities (โอกาส)
                                     <button onclick="generateSingleField('input-opportunities', 'Opportunities (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-opportunities" rows="4" placeholder="เช่น นโยบาย Telemedicine..."></textarea>
+                                <textarea id="input-opportunities" class="form-textarea" placeholder="เช่น นโยบาย Telemedicine..."></textarea>
                             </div>
                              <div class="input-group">
                                 <label>
                                     Threats (อุปสรรค)
                                     <button onclick="generateSingleField('input-threats', 'Threats (SWOT)')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-threats" rows="4" placeholder="เช่น กฎระเบียบที่เข้มงวด..."></textarea>
+                                <textarea id="input-threats" class="form-textarea" placeholder="เช่น กฎระเบียบที่เข้มงวด..."></textarea>
                             </div>
                          </div>
                     </div>
@@ -361,14 +722,14 @@
                                     Constraints (ข้อจำกัดหลัก)
                                     <button onclick="generateSingleField('input-constraints', 'Strategic Constraints')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-constraints" rows="3" placeholder="งบประมาณ, กฎหมาย PDPA..."></textarea>
+                                <textarea id="input-constraints" class="form-textarea" placeholder="งบประมาณ, กฎหมาย PDPA..."></textarea>
                             </div>
                             <div class="input-group">
                                 <label>
                                     Vision & Mission
                                     <button onclick="generateSingleField('input-vision', 'Vision and Mission statement')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                                 </label>
-                                <textarea id="input-vision" rows="3" placeholder="ระบุวิสัยทัศน์พันธกิจ..."></textarea>
+                                <textarea id="input-vision" class="form-textarea" placeholder="ระบุวิสัยทัศน์พันธกิจ..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -387,34 +748,45 @@
                 <div class="flex items-center justify-between mb-6 border-b pb-4">
                     <div>
                         <span class="text-green-600 font-bold uppercase tracking-wide text-xs">Phase 2</span>
-                        <h2 class="text-2xl font-bold text-gray-800">Direction Management (DM)</h2>
+                        <h2 class="text-2xl font-bold text-gray-800">การจัดการทิศทาง (Direction Management)</h2>
                     </div>
                 </div>
 
+                <!-- Strategic Hint -->
+                <div class="strategic-hint">
+                    <i class="fa-solid fa-compass"></i>
+                    <strong>เคล็ดลับเชิงกลยุทธ์:</strong> การวางทิศทางที่ชัดเจนจะเชื่อมโยง SWOT จาก Phase 1 กับเป้าหมายอนาคต คิดว่า "จะเปลี่ยนจุดอ่อนเป็นจุดแข็งอย่างไร และจะใช้โอกาสให้เกิดประโยชน์สูงสุดอย่างไร"
+                </div>
+
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100 mb-6">
-                    <h3 class="font-bold text-lg mb-4">กำหนดกรอบคิดเชิงยุทธศาสตร์</h3>
-                    <p class="text-xs text-gray-500 mb-4">* AI จะนำข้อมูล Context จาก Phase 1 มาช่วยคิดในส่วนนี้</p>
+                    <h3 class="section-header">กรอบคิดเชิงยุทธศาสตร์</h3>
+                    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-4 rounded">
+                        <p class="text-sm text-green-800">
+                            <i class="fa-solid fa-info-circle mr-2"></i>
+                            AI จะนำข้อมูล Context จาก Phase 1 มาช่วยคิดในส่วนนี้โดยอัตโนมัติ
+                        </p>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="input-group">
                             <label>
                                 Global Trends & Drivers
                                 <button onclick="generateSingleField('input-trends', 'Global Trends')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                             </label>
-                            <textarea id="input-trends" rows="3" placeholder="AI in Healthcare, Telepharmacy..."></textarea>
+                            <textarea id="input-trends" class="form-textarea" placeholder="AI in Healthcare, Telepharmacy..."></textarea>
                         </div>
                         <div class="input-group">
                             <label>
                                 Stakeholder Expectations
                                 <button onclick="generateSingleField('input-stakeholders', 'Stakeholder Expectations')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                             </label>
-                            <textarea id="input-stakeholders" rows="3" placeholder="ลูกค้าต้องการความรวดเร็ว..."></textarea>
+                            <textarea id="input-stakeholders" class="form-textarea" placeholder="ลูกค้าต้องการความรวดเร็ว..."></textarea>
                         </div>
                         <div class="input-group md:col-span-2">
                             <label>
                                 Strategic Intent / Goals
                                 <button onclick="generateSingleField('input-goals', 'Strategic Intent / Goals')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                             </label>
-                            <textarea id="input-goals" rows="4" placeholder="เป้าหมายเชิงกลยุทธ์..."></textarea>
+                            <textarea id="input-goals" class="form-textarea" placeholder="เป้าหมายเชิงกลยุทธ์..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -425,7 +797,7 @@
                             <span class="flex items-center gap-2"><i class="fa-solid fa-gavel"></i> Design Principles & Enablers</span>
                             <button onclick="generateSingleField('input-principles', 'IT Design Principles')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button>
                          </label>
-                         <textarea id="input-principles" rows="4" class="bg-white" placeholder="- Mobile First Design&#10;- Zero Trust Security..."></textarea>
+                         <textarea id="input-principles" class="form-textarea bg-white" placeholder="- Mobile First Design&#10;- Zero Trust Security..."></textarea>
                     </div>
                 </div>
 
@@ -442,12 +814,18 @@
                 <div class="flex items-center justify-between mb-6 border-b pb-4">
                     <div>
                         <span class="text-yellow-600 font-bold uppercase tracking-wide text-xs">Phase 3</span>
-                        <h2 class="text-2xl font-bold text-gray-800">Blueprint Management (BM)</h2>
+                        <h2 class="text-2xl font-bold text-gray-800">แผนงานสถาปัตยกรรม (Blueprint Management)</h2>
                     </div>
-                    <button onclick="generateBlueprint()" id="btn-blueprint" class="btn-ai text-xs px-3 py-2 rounded shadow-sm flex items-center">
-                        <span id="btn-blueprint-icon"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i></span>
-                        <span id="btn-blueprint-text">Auto Blueprint (Bullet Points)</span>
+                    <button onclick="generateBlueprint()" id="btn-blueprint" class="btn-enhanced-ai text-sm px-4 py-2 rounded-lg shadow-md flex items-center">
+                        <span id="btn-blueprint-icon"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i></span>
+                        <span id="btn-blueprint-text">สร้าง Blueprint อัตโนมัติ</span>
                     </button>
+                </div>
+
+                <!-- Strategic Hint -->
+                <div class="strategic-hint">
+                    <i class="fa-solid fa-drafting-compass"></i>
+                    <strong>เคล็ดลับเชิงกลยุทธ์:</strong> การออกแบบ Blueprint คือการแปลงวิสัยทัศน์ให้เป็นรูปธรรม จัดลำดับความสำคัญ และสร้างฐานข้อมูลที่เชื่อมโยงกันระหว่าง Business, Data และ Technology
                 </div>
 
                 <div class="space-y-6">
@@ -457,18 +835,18 @@
                             <i class="fa-solid fa-briefcase text-yellow-500"></i> 1. Business Architecture
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="input-group">
-                                <label class="text-sm">Front Office <button onclick="generateSingleField('input-biz-front', 'Front Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-biz-front" rows="6" placeholder="- Channel A&#10;- CRM System"></textarea>
-                            </div>
-                            <div class="input-group">
-                                <label class="text-sm">Core Operations <button onclick="generateSingleField('input-biz-core', 'Core Operations (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-biz-core" rows="6" placeholder="- Order Mgmt&#10;- Production"></textarea>
-                            </div>
-                            <div class="input-group">
-                                <label class="text-sm">Back Office <button onclick="generateSingleField('input-biz-back', 'Back Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
-                                <textarea id="input-biz-back" rows="6" placeholder="- HR System&#10;- Accounting"></textarea>
-                            </div>
+                        <div class="input-group">
+                            <label class="text-sm">Front Office <button onclick="generateSingleField('input-biz-front', 'Front Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
+                            <textarea id="input-biz-front" class="form-textarea" placeholder="- Channel A&#10;- CRM System"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="text-sm">Core Operations <button onclick="generateSingleField('input-biz-core', 'Core Operations (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
+                            <textarea id="input-biz-core" class="form-textarea" placeholder="- Order Mgmt&#10;- Production"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="text-sm">Back Office <button onclick="generateSingleField('input-biz-back', 'Back Office Capabilities (Bullet points)')" class="btn-ai-field"><i class="fa-solid fa-wand-magic-sparkles"></i></button></label>
+                            <textarea id="input-biz-back" class="form-textarea" placeholder="- HR System&#10;- Accounting"></textarea>
+                        </div>
                         </div>
                     </div>
 
@@ -587,7 +965,7 @@
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">1. Governance & Policy <button onclick="generateSingleField('input-gov', 'Security Governance & Policy')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-gov" rows="3" placeholder="ระบุผู้รับผิดชอบ..."></textarea></div></div>
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">2. Risk Identification <button onclick="generateSingleField('input-risk', 'Cybersecurity Risk Analysis')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-risk" rows="3" placeholder="ความเสี่ยงหลัก..."></textarea></div></div>
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">3. Protection Controls <button onclick="generateSingleField('input-protect', 'Cybersecurity Protection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-protect" rows="3" placeholder="มาตรการป้องกัน..."></textarea></div></div>
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">4. Detection Controls <button onclick="generateSingleField('input-detect', 'Cybersecurity Detection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-detect" rows="3" placeholder="มาตรการตรวจจับ..."></textarea></div></div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">4. Detection Controls <button onclick="generateSingleField('input-detect', 'Cybersecurity Detection Controls')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-detect" rows="3" placeholder="มาตรการตรวจับ..."></textarea></div></div>
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-cyan-100"><div class="input-group"><label class="text-cyan-800">5. Response & Recovery <button onclick="generateSingleField('input-respond', 'Cybersecurity Response & Recovery Plan')" class="btn-ai-field" title="Auto-fill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</button></label><textarea id="input-respond" rows="3" placeholder="แผนกู้คืน..."></textarea></div></div>
                     </div>
                 </div>
@@ -649,7 +1027,7 @@
         let manualApiKey = localStorage.getItem('ea_builder_api_key') || '';
         const OPENAI_SYSTEM_PROMPT = `You are an AI assistant specialized in Enterprise Architecture (EA), designed to support strategic planning, system design, and organizational alignment across business, data, application, and technology layers.
 
-You help users analyze complex organizations, clarify business capabilities, map processes, design target architectures, and evaluate trade-offs between people, process, and technology. You can assist with frameworks such as TOGAF, Zachman, ArchiMate, BMC, or custom EA models, while adapting explanations to the user's level of technical understanding.
+You help users analyze complex organizations, clarify business capabilities, map processes, design target architectures, and evaluate trade-offs between people, process, and technology. You can assist with frameworks such as TOGAF, Zachman, ArchiMate, BMC, or custom EA models, while adapting explanations to user's level of technical understanding.
 
 You provide clear, structured, and honest guidance without unnecessary affirmations or filler phrases. You respond directly and thoughtfully to each request, focusing on reasoning, structure, and practical applicability rather than buzzwords.
 
@@ -664,7 +1042,164 @@ Your primary goal is to help the user:
 
         document.addEventListener('DOMContentLoaded', () => {
              if(manualApiKey) document.getElementById('api-key-input').value = manualApiKey;
+             
+             // Initialize auto-expanding textareas
+             initializeAutoExpand();
+             
+             // Initialize progress tracking
+             updateAllNavigationStatus();
+             
+             // Add input listeners for progress tracking
+             addInputListeners();
         });
+
+        // Auto-expanding textarea functionality
+        function initializeAutoExpand() {
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                textarea.classList.add('auto-expand');
+                textarea.addEventListener('input', autoExpand);
+                textarea.addEventListener('focus', autoExpand);
+                
+                // Initial height adjustment
+                autoExpand.call(textarea);
+            });
+        }
+
+        function autoExpand() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(80, this.scrollHeight) + 'px';
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notificationArea = document.getElementById('notification-area');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            // Set border color based on type
+            const colors = {
+                'success': '#10b981',
+                'error': '#ef4444',
+                'warning': '#f59e0b',
+                'info': '#3b82f6'
+            };
+            notification.style.borderLeftColor = colors[type] || colors.info;
+            
+            notification.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} mt-1"></i>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            notificationArea.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        // Progress tracking
+        function getPhaseStatus(phaseId) {
+            const requiredFields = getRequiredFieldsForPhase(phaseId);
+            let filledCount = 0;
+            let totalCount = requiredFields.length;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value.trim().length > 0) {
+                    filledCount++;
+                }
+            });
+            
+            if (filledCount === 0) return 'missing';
+            if (filledCount === totalCount) return 'complete';
+            return 'in-progress';
+        }
+
+        function getRequiredFieldsForPhase(phaseId) {
+            const fieldMap = {
+                'A': ['ai-input-org-type', 'ai-input-org-desc', 'input-strengths', 'input-weaknesses', 'input-opportunities', 'input-threats', 'input-constraints', 'input-vision'],
+                'B': ['input-trends', 'input-stakeholders', 'input-goals', 'input-principles'],
+                'C': ['input-biz-front', 'input-biz-core', 'input-biz-back', 'input-data-arch', 'input-tech-arch'],
+                'D': ['input-short-term', 'input-medium-term', 'input-long-term', 'input-bsc-finance', 'input-bsc-customer', 'input-bsc-process', 'input-bsc-learning'],
+                'E': ['input-gov', 'input-risk', 'input-protect', 'input-detect', 'input-respond'],
+                'F': [] // Output phase doesn't have input fields
+            };
+            return fieldMap[phaseId] || [];
+        }
+
+        function updateNavigationStatus(phaseId) {
+            const navItem = document.getElementById(`nav-${phaseId}`);
+            const status = getPhaseStatus(phaseId);
+            
+            // Remove existing status classes
+            navItem.classList.remove('completed', 'in-progress', 'missing');
+            
+            // Add new status class
+            navItem.classList.add(status);
+            
+            // Add or update status indicator
+            let statusIndicator = navItem.querySelector('.status-indicator');
+            if (!statusIndicator) {
+                statusIndicator = document.createElement('span');
+                statusIndicator.className = 'status-indicator ml-2';
+                navItem.querySelector('div').appendChild(statusIndicator);
+            }
+            
+            // Update status indicator content
+            const statusConfig = {
+                'complete': { class: 'status-complete', icon: 'fa-check', text: 'สมบูรณ์' },
+                'in-progress': { class: 'status-inprogress', icon: 'fa-clock', text: 'กำลังทำ' },
+                'missing': { class: 'status-missing', icon: 'fa-exclamation', text: 'ยังไม่ได้กรอก' }
+            };
+            
+            const config = statusConfig[status];
+            statusIndicator.className = `status-indicator ml-2 ${config.class}`;
+            statusIndicator.innerHTML = `<i class="fa-solid ${config.icon} text-xs"></i> ${config.text}`;
+        }
+
+        function updateAllNavigationStatus() {
+            ['A', 'B', 'C', 'D', 'E', 'F'].forEach(phaseId => {
+                updateNavigationStatus(phaseId);
+            });
+        }
+
+        function addInputListeners() {
+            const allInputs = document.querySelectorAll('input[type="text"], textarea');
+            allInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    // Debounce status updates
+                    clearTimeout(input.updateTimeout);
+                    input.updateTimeout = setTimeout(() => {
+                        updateAllNavigationStatus();
+                    }, 300);
+                });
+            });
+        }
+
+        // Enhanced step switching with validation
+        function switchStepWithValidation(stepId) {
+            const currentStep = document.querySelector('.step-content.active').id.replace('content-', '');
+            const currentStatus = getPhaseStatus(currentStep);
+            
+            if (currentStatus !== 'complete' && currentStatus !== 'in-progress') {
+                showNotification('กรุณากรอกข้อมูลให้ครบถ้วนก่อนไปยังขั้นตอนถัดไป', 'warning');
+                return;
+            }
+            
+            switchStep(stepId);
+        }
 
         // Safe value getter
         const getVal = (id) => document.getElementById(id)?.value || "";

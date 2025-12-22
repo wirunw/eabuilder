@@ -5,22 +5,29 @@ const users = [
     {
         id: 1,
         username: 'admin@eabuilder.com',
-        password: 'admin123',
+        password: 'mdx1apollo',
         name: 'Administrator',
         role: 'admin'
     },
     {
         id: 2,
         username: 'user1@eabuilder.com',
-        password: 'user123',
+        password: 'mdx1apollo',
         name: 'User 1',
         role: 'user'
     },
     {
         id: 3,
         username: 'user2@eabuilder.com',
-        password: 'user123',
+        password: 'mdx1apollo',
         name: 'User 2',
+        role: 'user'
+    },
+    {
+        id: 4,
+        username: 'mdx1',
+        password: 'mdx1apollo',
+        name: 'ปดพ.1 ผู้บริหารดิจิทัลทางการแพทย์',
         role: 'user'
     }
 ];
